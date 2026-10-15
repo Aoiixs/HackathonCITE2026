@@ -19,6 +19,13 @@ create table if not exists profiles (
 -- every staff member's name and role.
 alter table profiles enable row level security;
 
+-- Table privileges, the first layer (added after a security check found
+-- signed-out visitors could read this table). Supabase hands every new
+-- table to signed-in and signed-out users by default; take all of it away
+-- and give back only reading. Policies then decide which rows.
+revoke all on public.profiles from anon, authenticated;
+grant select on public.profiles to authenticated;
+
 -- A signed-in user may read ONLY their own profile.
 -- Signed-out visitors have no policy, so they can read nothing.
 create policy "users can read their own profile"
