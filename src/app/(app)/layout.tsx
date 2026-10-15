@@ -1,10 +1,9 @@
 import Link from "next/link";
 import {
+  ArrowLeftRight,
   ChartColumn,
   LayoutDashboard,
   Package,
-  PackageMinus,
-  PackagePlus,
   ShoppingCart,
   TriangleAlert,
   type LucideIcon,
@@ -17,8 +16,7 @@ const menu: { label: string; href: string; icon: LucideIcon }[] = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard },
   { label: "New sale", href: "/sales/new", icon: ShoppingCart },
   { label: "Manage products", href: "/products", icon: Package },
-  { label: "Stock in", href: "/stock-in", icon: PackagePlus },
-  { label: "Stock out", href: "/stock-out", icon: PackageMinus },
+  { label: "Manage Stocks", href: "/stock", icon: ArrowLeftRight },
   { label: "Low stock", href: "/low-stock", icon: TriangleAlert },
   { label: "History & reports", href: "/history", icon: ChartColumn },
 ];
