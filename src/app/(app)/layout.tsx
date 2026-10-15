@@ -6,7 +6,7 @@ import { LogoutButton } from "./logout-button";
 // greyed out so the menu is visible, and become links as each ticket ships.
 const menu = [
   { label: "Dashboard", href: "/" },
-  { label: "New sale", href: null },
+  { label: "New sale", href: "/sales/new" },
   { label: "Manage products", href: "/products" },
   { label: "Low stock", href: null },
 ];
