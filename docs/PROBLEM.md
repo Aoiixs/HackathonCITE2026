@@ -24,8 +24,8 @@ This happens daily, with every customer order.
   roughly 100 to 350 minutes of handling a day (our arithmetic from his
   figures, not a separate measurement).
 - Products running out unnoticed: it happens many times. Orders get
-  declined and profit is lost. A peso amount for one real case is still
-  to be collected.
+  declined, roughly ₱25 lost per declined order (as reported; how many
+  orders are declined per day is not yet counted).
 
 ## Today's workaround
 A notebook for orders and an Excel spreadsheet for stock, kept in
@@ -67,7 +67,7 @@ maintain.
 - **Stock**: how many units of a product are left.
 - **Minimum level**: the stock number below which a product counts as "running low".
 - **Running low**: a product whose stock is below its minimum level.
-- **Sale**: the saved record of an order once it is paid, with the payment method and a receipt number. (Team to confirm that Jeremiah uses "order" and "sale" for the same thing.)
+- **Sale**: the saved record of an order once it is paid, with the payment method and a receipt number. Confirmed: Jeremiah uses "sale" and "order" for the same thing.
 - **Void**: cancelling a wrong sale so it no longer counts. Stage 2.
 - **Stock-in**: stock added, for example a delivery arrives.
 - **Stock-out**: stock removed without a sale, for example spoiled or damaged.
