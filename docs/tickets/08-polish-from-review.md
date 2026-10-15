@@ -4,14 +4,14 @@
 
 **Blocked by:** 07
 
-**Status:** todo
+**Status:** done
 
-- [ ] Pressing Escape on a receipt that has a low-stock warning waiting shows the warning instead of closing everything
-- [ ] If deactivating a product fails, the manager sees an error message, not "Product deactivated"
-- [ ] If flagging or resolving a low-stock alert fails, the manager sees an error message and the list is unchanged
-- [ ] On a phone-width screen the manager menu sits above the page content instead of squeezing it, and the top bar wraps
-- [ ] The menu has no unused "(soon)" branch
-- [ ] The manager Dashboard's product table shows the Minimum column and an Edit link on each row
-- [ ] The manager Dashboard shows a panel of the open and flagged alerts
-- [ ] The employee Dashboard is unchanged
-- [ ] Works on the live URL
+- [x] Pressing Escape on a receipt that has a low-stock warning waiting shows the warning instead of closing everything
+- [x] If deactivating a product fails, the manager sees an error message, not "Product deactivated"
+- [x] If flagging or resolving a low-stock alert fails, the manager sees an error message and the list is unchanged
+- [x] On a phone-width screen the manager menu sits above the page content instead of squeezing it, and the top bar wraps
+- [x] The menu has no unused "(soon)" branch
+- [x] The manager Dashboard's product table shows the Minimum column and an Edit link on each row
+- [x] The manager Dashboard shows a panel of the open and flagged alerts
+- [x] The employee Dashboard is unchanged
+- [x] Works on the live URL
