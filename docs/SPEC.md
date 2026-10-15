@@ -304,6 +304,9 @@ done the same way; there is no staff screen.
       products or Manage Stocks (sent back to the Dashboard).
 - [ ] The manager sees every employee's sales on the Dashboard and in
       History & reports, and has no New sale button.
+- [x] `supabase/seed/demo-data.sql` and `supabase/seed/remove-demo-data.sql`
+      tested in Supabase: History, Low stock and employee-only sales looked
+      right, and the remove script cleared the demo data cleanly.
 
 ## Out of scope
 - Managers taking sales (decided: employees only sell).
