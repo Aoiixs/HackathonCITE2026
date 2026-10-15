@@ -68,6 +68,14 @@ export default async function DashboardPage() {
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <LowStockBadge />
+          {!isManager && (
+            <Link
+              href="/history"
+              className={buttonVariants({ variant: "outline", size: "lg" })}
+            >
+              History
+            </Link>
+          )}
           <Link href="/sales/new" className={buttonVariants({ size: "lg" })}>
             New sale
           </Link>
