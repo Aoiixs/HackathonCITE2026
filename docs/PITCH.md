@@ -1,80 +1,77 @@
-# Pitch — StockWise
+# Pitch — StockWise (Nexora Order & Stock Tracker)
 
-> Every `[BRACKET]` is a placeholder. Replace it with Jeremiah's answer
-> before you present, and do not say a number you have not been given.
-> The complaint figures are the owner's estimates, not counted records,
-> and the script says so out loud. If you have two presenters, split it
-> as beats 1 and 4–5 / beats 2–3.
+> Every number below comes from `docs/PROBLEM.md` and was reported by
+> Jeremiah and the manager. Say "we were told", not "we measured". If you
+> have two presenters, split it as beats 1–2 / beats 3–5.
 
-## The script (about 2 minutes, spoken)
+## The script (about 3 minutes, spoken)
 
-### 1. The problem
-Jeremiah works the counter at Nexora's Ortiz branch. The owner estimates
-about 50 customer complaints every [WEEK / MONTH]. These are estimates,
-not counted records. Most are about [LONG LINES / ITEMS RUNNING OUT /
-WRONG ORDERS OR CHANGE].
+### 1. The person
+Meet Jeremiah. He works the counter at Nexora's Ortiz branch. On a normal
+day he takes fifty to seventy orders. On a busy day, a hundred or more.
+Every one goes into a notebook, by hand, while the customer waits in the
+queue.
 
-Why are the lines long? Orders are written by hand in a notebook while
-customers wait. The total and the change are worked out by hand. The
-slowest part is [WRITING IN THE NOTEBOOK / CALCULATING TOTAL AND CHANGE /
-CHECKING IF AN ITEM IS STILL IN STOCK]. Nobody at the counter can see
-what is left, and stock lives in a separate Excel file, so sales and
-stock are never connected. At rush hour, it all piles up.
+### 2. Today
+Later, he types those orders again into an Excel file to update the
+stock. Two steps that never talk to each other. We were told each order
+costs two to five minutes. Notebook entries go missing. The stock count
+drifts away from the shelf. And the manager finds out a product is
+running out too late. Then orders get declined, about twenty-five pesos
+lost each time. Jeremiah says it happens many times.
 
-### 2. The solution
-StockWise connects the till to the inventory. One-tap product buttons
-replace handwriting. The total and the change are worked out
-automatically. Every button shows live stock, and an order bigger than
-the stock is blocked, so nobody sells what is not there. When a product
-drops below its minimum, a low-stock alert warns the manager before it
-runs out. Next, staff will record stock coming in and going out with a
-reason, and the manager will see the full history.
+### 3. Our fix
+We built StockWise. In one sentence: staff tap the products in a
+customer's order, record the payment, and give a receipt, and the stock
+drops by itself. When a product falls below its minimum, it shows up on a
+running low list, so the manager can restock before it runs out.
 
-### 3. Who uses it
-The employee at the counter takes orders and gives receipts. The manager
-watches the stock, manages products, and decides when to restock.
+We asked Jeremiah about a Google Sheet with formulas. He said it is too
+complicated to set up and keep working. So we built something simple, for
+one branch.
 
-### 4. What we will show
-Live, in under three minutes: sign in, add a product, take an order paid
-in cash, show the receipt, watch the stock drop, and see the low-stock
-alert appear.
+### 4. The demo moment
+Now we show it live. We sign in. We add a product. We take an order and
+show the receipt. We watch the stock number drop. Then we see the product
+appear on the running low list.
 
-### 5. What success looks like
-Fewer complaints than today's estimated 50 every [WEEK / MONTH], shorter
-lines, and a stock count that matches the shelf. We will ask Jeremiah
-for the new complaint count and check the screen against the shelf.
+### 5. How we will know
+Jeremiah will try it at the counter. We will time one order in the app
+and compare it to today's two to five minutes. We will also check the
+screen's stock count against the shelf. If the order is faster and the
+count matches, it worked.
+
+*(About 330 words.)*
 
 ## The three hardest questions
 
-**1. "How do you know the complaints are real? Fifty is just a guess."**
-This attacks the weakest point: the figures are owner estimates, not
-counted records. Honest answer: "Yes, they are estimates. That is why we
-say so. We have asked Jeremiah for the main cause and the slowest step,
-and we will count complaints for one week once the app is in use." Ask
-Jeremiah to keep a tally on paper for a week, even before the app exists.
+**1. "Two to five minutes per order. Did you time that, or is it a guess?"**
+This attacks the weakest point: the time figures are reported, not timed.
+Honest answer: "Jeremiah and the manager told us. We have not put a
+stopwatch on it yet, and that is the first thing we will do with the app:
+time one order each way." Before you present, time one real order on
+paper with a phone stopwatch.
 
-**2. "Why not use an ordinary POS app or a shared Google Sheet?"**
-Honest answer: "A sheet still needs someone to type every order in, and
-it cannot block an order bigger than the stock. We built this for one
-branch, around the way Jeremiah actually works." Check with Jeremiah
-whether the owner has looked at other POS apps. This is your reasoning,
-not something he has said.
+**2. "Twenty-five pesos per declined order is small. Why does this matter?"**
+Honest answer: "On its own, yes. It adds up with volume, and we have not
+yet counted how many orders are declined a day. We will ask Jeremiah to
+tally them for one day." Do not multiply it into a monthly total unless
+you have that count.
 
-**3. "Will tapping a screen really be faster than the notebook in a long
-line?"**
-Honest answer: "We don't know yet. That is what Jeremiah will test."
-Make the product buttons big and keep an order to a few taps. Time one
-real order on paper and one in the app, and bring both times.
+**3. "Why not a shared Google Sheet or an existing POS app?"**
+Honest answer: "Jeremiah told us a sheet with formulas is too
+complicated for him to maintain. Our app deducts stock while the order is
+taken and warns the manager. We have not compared existing POS apps."
+That last sentence is true; say it rather than bluff.
 
 ## Is the evidence thin?
-Yes. The person and the routine are real, but the complaint numbers are
-estimates, and the cause and slowest step are still unconfirmed (the
-brackets above). Strengthen it before you present: get Jeremiah's
-answers, watch him for 10 minutes, and ask him in his own words what
-annoys him most. One quote from Jeremiah is worth more than a paragraph
-from us.
+Medium. The person, the routine and the volume are real, and Jeremiah's
+views are in his own words. The weak spots are that the time per order is
+unmeasured, the number of declined orders is not counted, and "Jeremiah
+will try it" is still to be confirmed.
 
-## Placeholders still to fill
-- Complaints per [WEEK / MONTH]
-- Main cause of complaints: [LONG LINES / ITEMS RUNNING OUT / WRONG ORDERS OR CHANGE]
-- Slowest step: [WRITING IN THE NOTEBOOK / CALCULATING TOTAL AND CHANGE / CHECKING IF AN ITEM IS STILL IN STOCK]
+Strengthen it before you present:
+- Time one real order on paper, and write the time down.
+- Ask Jeremiah how many orders he declines on a typical day.
+- Get one quote from Jeremiah in his own words about what annoys him most.
+- Confirm a time when he will try the live app.
