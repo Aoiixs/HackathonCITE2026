@@ -5,10 +5,20 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 // rows a signed-out visitor can see. Row Level Security should make that 0,
 // and "Connected" proves the app reached Supabase. Ticket 03 replaces it.
 export async function ConnectionStatus() {
-  const supabase = await createClient();
-  const { count, error } = await supabase
-    .from("profiles")
-    .select("id", { count: "exact", head: true });
+  let count: number | null = null;
+  let error: { message: string } | null = null;
+
+  // createClient() throws if the Supabase variables are missing, so it sits
+  // inside the try: a broken setup shows "Not connected" instead of crashing
+  // the whole page.
+  try {
+    const supabase = await createClient();
+    ({ count, error } = await supabase
+      .from("profiles")
+      .select("id", { count: "exact", head: true }));
+  } catch (e) {
+    error = { message: e instanceof Error ? e.message : "unknown error" };
+  }
 
   if (error) {
     console.error("Supabase check failed:", error.message);
