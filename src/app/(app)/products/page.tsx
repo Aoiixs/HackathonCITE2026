@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { AdjustStockButton } from "./adjust-stock-button";
 import { DeactivateButton } from "./deactivate-button";
 import { Toast } from "./toast";
 
@@ -22,6 +23,7 @@ type Product = {
 const SAVED_MESSAGES: Record<string, string> = {
   added: "Product added.",
   updated: "Product updated.",
+  adjusted: "Stock adjusted.",
   deactivated: "Product deactivated.",
 };
 
@@ -139,6 +141,13 @@ export default async function ProductsPage({
                     >
                       Edit
                     </Link>
+                    {p.is_active && (
+                      <AdjustStockButton
+                        productId={p.id}
+                        productName={p.name}
+                        currentStock={p.current_stock}
+                      />
+                    )}
                     {p.is_active && (
                       <DeactivateButton productId={p.id} productName={p.name} />
                     )}

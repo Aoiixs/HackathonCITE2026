@@ -31,7 +31,8 @@ export default async function EditProductPage({
         <h1 className="text-3xl font-semibold tracking-tight">Edit product</h1>
         <p className="text-sm text-muted-foreground">
           Current stock: {product.current_stock}. Stock can&apos;t be changed
-          here; it moves through sales and, later, stock adjustments.
+          here; it moves through sales and the Adjust stock button on the
+          products list.
         </p>
       </header>
       <ProductForm

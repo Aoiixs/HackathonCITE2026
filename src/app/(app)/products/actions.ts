@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireManager } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
@@ -129,6 +130,50 @@ export async function updateProduct(
   }
 
   redirect("/products?saved=updated");
+}
+
+export type AdjustStockState = { error: string | null; done: boolean };
+
+export async function adjustStock(
+  _previous: AdjustStockState,
+  formData: FormData,
+): Promise<AdjustStockState> {
+  await requireManager();
+  const id = String(formData.get("id") ?? "");
+  const counted = String(formData.get("counted") ?? "").trim();
+  const note = String(formData.get("note") ?? "").trim();
+
+  if (!/^\d{1,9}$/.test(counted)) {
+    return { error: "Enter the counted stock as a whole number, 0 or more.", done: false };
+  }
+  if (!note) return { error: "Please write a note explaining the change.", done: false };
+  if (note.length > 500) {
+    return { error: "Keep the note under 500 characters.", done: false };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("adjust_stock", {
+    p_product_id: id,
+    p_new_stock: Number(counted),
+    p_note: note,
+  });
+
+  if (error) {
+    // 22023 messages are written for people ("…same as the current stock").
+    if (error.code === "22023") return { error: error.message, done: false };
+    if (error.code === "42501") {
+      return { error: "You are not allowed to do this.", done: false };
+    }
+    console.error("Adjust stock failed:", error.message);
+    return { error: "Could not save. Nothing was changed. Please try again.", done: false };
+  }
+
+  // Stock changed, so every screen that shows it must be rebuilt.
+  revalidatePath("/products");
+  revalidatePath("/");
+  revalidatePath("/low-stock");
+  revalidatePath("/sales/new");
+  return { error: null, done: true };
 }
 
 export async function deactivateProduct(formData: FormData) {
