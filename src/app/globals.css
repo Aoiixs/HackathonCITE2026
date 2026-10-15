@@ -3,42 +3,35 @@
 /* Design tokens. Change these to re-skin the whole app at once —
    every component below reads from them. */
 :root {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
+  color-scheme: light; /* always light, even if the device is set to dark */
+  --background: #f6f6f2;
+  --foreground: #1c2a23;
   --card: #ffffff;
-  --card-foreground: #0a0a0a;
-  --primary: #1a1a1a;
-  --primary-foreground: #fafafa;
-  --secondary: #f4f4f5;
-  --secondary-foreground: #1a1a1a;
-  --muted: #f4f4f5;
-  --muted-foreground: #71717a;
-  --destructive: #dc2626;
-  --destructive-foreground: #fafafa;
-  --border: #e4e4e7;
-  --input: #e4e4e7;
-  --ring: #0a0a0a;
-  --radius: 0.625rem;
-}
+  --card-foreground: #1c2a23;
+  --primary: #1f6b4a;
+  --primary-hover: #18573c;
+  --primary-foreground: #ffffff;
+  --secondary: #eef1ec;
+  --secondary-foreground: #1c2a23;
+  --muted: #eef1ec;
+  --muted-foreground: #6b756f;
+  --destructive: #a33a26;
+  --destructive-foreground: #ffffff;
+  --border: #e3e6e1;
+  --input: #d5dad4;
+  --ring: #1f6b4a;
+  --radius: 0.5rem; /* 8px: buttons and inputs. Cards use 12px (rounded-xl). */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #fafafa;
-    --card: #141414;
-    --card-foreground: #fafafa;
-    --primary: #fafafa;
-    --primary-foreground: #1a1a1a;
-    --secondary: #27272a;
-    --secondary-foreground: #fafafa;
-    --muted: #27272a;
-    --muted-foreground: #a1a1aa;
-    --destructive: #ef4444;
-    --destructive-foreground: #fafafa;
-    --border: #27272a;
-    --input: #3f3f46;
-    --ring: #d4d4d8;
-  }
+  /* Sidebar (manager) */
+  --sidebar: #1f3b2f;
+  --sidebar-active: #2c4a3d;
+  --sidebar-foreground: #e8efea;
+  --sidebar-muted: #a9bdb1;
+
+  /* Charts and progress */
+  --bar: #d3e0d8;
+  --track: #e3ede7;
+  --divider: #eceeea;
 }
 
 @theme inline {
@@ -57,9 +50,21 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-primary-hover: var(--primary-hover);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-active: var(--sidebar-active);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-muted: var(--sidebar-muted);
+  --color-bar: var(--bar);
+  --color-track: var(--track);
+  --color-divider: var(--divider);
   --radius-base: var(--radius);
   --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+a:not([class]) {
+  color: var(--primary);
 }
 
 body {

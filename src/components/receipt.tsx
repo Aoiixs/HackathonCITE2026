@@ -16,7 +16,7 @@ export type ReceiptData = {
   changeAmount: number;
 };
 
-// The receipt itself. Used right after a sale (New sale) and when a past
+// The receipt itself. Used right after a sale (the Menu screen) and when a past
 // sale is opened again (History), so both always look the same.
 export function ReceiptView({ receipt }: { receipt: ReceiptData }) {
   return (

@@ -1,28 +1,28 @@
 import Link from "next/link";
 import { TriangleAlert } from "lucide-react";
-import { getLowStockAlerts } from "@/lib/low-stock";
+import { getLowStockCount } from "@/lib/low-stock";
 import { cn } from "@/lib/utils";
 
-// A small "Low stock: N" link, shown on the Dashboard and the New sale screen.
+// A small "Low stock: N" link, shown on the Dashboard and the Menu screen.
 export async function LowStockBadge() {
-  const count = (await getLowStockAlerts()).length;
+  const count = await getLowStockCount();
 
   return (
     <Link
       href="/low-stock"
       className={cn(
-        "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium",
+        "inline-flex h-11 items-center gap-2 rounded-[var(--radius)] border px-4 text-base font-medium",
         count > 0
-          ? "border-amber-500 bg-amber-50 text-amber-950"
-          : "border-border text-muted-foreground",
+          ? "border-[#e9b949] bg-[#fdf0d5] text-[#8a5a0b]"
+          : "border-input bg-card text-muted-foreground",
       )}
     >
       <TriangleAlert className="size-4" aria-hidden="true" />
       Low stock
       <span
         className={cn(
-          "rounded-full px-2 py-0.5 text-xs font-semibold",
-          count > 0 ? "bg-amber-500 text-white" : "bg-secondary",
+          "flex min-w-6 items-center justify-center rounded-full px-1.5 py-0.5 text-xs font-semibold",
+          count > 0 ? "bg-[#e9b949] text-[#3d2a05]" : "bg-secondary",
         )}
       >
         {count}

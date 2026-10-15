@@ -3,7 +3,8 @@ import { getStaff } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { formatPeso } from "@/lib/format";
 import { formatManila, startOfTodayManila } from "@/lib/time";
-import { getLowStockAlerts } from "@/lib/low-stock";
+import { getLowStockAlerts, getLowStockCount } from "@/lib/low-stock";
+import { StockStatusPill } from "@/components/status-pill";
 import { LowStockBadge } from "@/components/low-stock-badge";
 import {
   Banknote,
@@ -63,7 +64,7 @@ export default async function DashboardPage() {
   // return their own sales, a manager's return everyone's. The same code
   // serves both, and the database decides what each person may see.
   const supabase = await createClient();
-  const [productsResult, todayResult, recentResult, lowStockAlerts] = await Promise.all([
+  const [productsResult, todayResult, recentResult, lowStockAlerts, lowStockCount] = await Promise.all([
     supabase
       .from("products")
       .select("id, name, category, price, current_stock, minimum_stock")
@@ -81,6 +82,7 @@ export default async function DashboardPage() {
       .order("created_at", { ascending: false })
       .limit(5),
     getLowStockAlerts(),
+    getLowStockCount(),
   ]);
 
   const products = (productsResult.data ?? []) as Product[];
@@ -112,10 +114,12 @@ export default async function DashboardPage() {
               History
             </Link>
           )}
-          <Link href="/sales/new" className={buttonVariants({ size: "lg" })}>
-            <ShoppingCart className="size-4" aria-hidden="true" />
-            New sale
-          </Link>
+          {!isManager && (
+            <Link href="/sales/new" className={buttonVariants({ size: "lg" })}>
+              <ShoppingCart className="size-4" aria-hidden="true" />
+              New sale
+            </Link>
+          )}
         </div>
       </header>
 
@@ -140,14 +144,14 @@ export default async function DashboardPage() {
             {todaySales.length}
           </CardContent>
         </Card>
-        <Card>
+        <Card className={lowStockCount > 0 ? "border-[#e9b949]" : undefined}>
           <CardHeader>
             <IconTitle icon={TriangleAlert} muted>
               Low-stock items
             </IconTitle>
           </CardHeader>
           <CardContent className="text-3xl font-semibold">
-            {lowStockAlerts.length}
+            {lowStockCount}
           </CardContent>
         </Card>
         {isManager && (
@@ -171,7 +175,7 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent className="overflow-x-auto p-0">
             <table className="w-full text-left text-sm">
-              <thead className="border-y border-border text-muted-foreground">
+              <thead className="border-y border-divider text-muted-foreground">
                 <tr>
                   <th className="px-4 py-3 font-medium">Name</th>
                   <th className="px-4 py-3 font-medium">Category</th>
@@ -190,7 +194,7 @@ export default async function DashboardPage() {
               </thead>
               <tbody>
                 {products.map((p) => (
-                  <tr key={p.id} className="border-b border-border last:border-0">
+                  <tr key={p.id} className="border-b border-divider last:border-0">
                     <td className="px-4 py-3 font-medium">{p.name}</td>
                     <td className="px-4 py-3">{p.category}</td>
                     <td className="px-4 py-3 text-right">{formatPeso(p.price)}</td>
@@ -199,11 +203,7 @@ export default async function DashboardPage() {
                       <td className="px-4 py-3 text-right">{p.minimum_stock}</td>
                     )}
                     <td className="px-4 py-3">
-                      {p.current_stock < p.minimum_stock ? (
-                        <span className="font-medium text-amber-700">Low stock</span>
-                      ) : (
-                        "In stock"
-                      )}
+                      <StockStatusPill low={p.current_stock < p.minimum_stock} />
                     </td>
                     {isManager && (
                       <td className="px-4 py-2 text-right">
@@ -253,7 +253,7 @@ export default async function DashboardPage() {
                           {a.status === "flagged" ? "Flagged for restocking" : "Open"}
                         </span>
                       </span>
-                      <span className="font-semibold text-amber-700">
+                      <span className="font-semibold text-[#8a5a0b]">
                         {a.product.currentStock} / {a.product.minimumStock}
                       </span>
                     </li>

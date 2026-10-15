@@ -37,6 +37,9 @@ export async function completeSale(
   amountReceived: string,
 ): Promise<SaleResult> {
   const staff = await getStaff();
+  if (staff.role === "manager") {
+    return failure("Managers cannot record sales. Sign in as an employee.");
+  }
 
   // The browser already checked all this. Check again: anyone can call a
   // server action with any values, so the server never trusts the screen.

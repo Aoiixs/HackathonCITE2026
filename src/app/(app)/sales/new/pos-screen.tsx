@@ -325,7 +325,7 @@ export function PosScreen({ products }: { products: PosProduct[] }) {
             </div>
             <div className="flex flex-col gap-2 sm:flex-row sm:justify-center">
               <Button size="lg" onClick={() => dialogRef.current?.close()}>
-                New sale
+                Back to menu
               </Button>
               <Link
                 href="/"
@@ -353,7 +353,7 @@ export function PosScreen({ products }: { products: PosProduct[] }) {
             ) : (
               <div className="flex flex-col gap-2 sm:flex-row sm:justify-center">
                 <Button size="lg" onClick={() => dialogRef.current?.close()}>
-                  New sale
+                  Back to menu
                 </Button>
                 <Link
                   href="/"

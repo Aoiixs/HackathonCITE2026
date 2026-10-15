@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { getStaff } from "@/lib/auth";
 import { buttonVariants } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
@@ -6,7 +7,9 @@ import { LowStockBadge } from "@/components/low-stock-badge";
 import { PosScreen, type PosProduct } from "./pos-screen";
 
 export default async function NewSalePage() {
-  await getStaff(); // signed in and active, or sent away
+  const staff = await getStaff(); // signed in and active, or sent away
+  // Only employees take orders. Managers manage; they do not sell.
+  if (staff.role === "manager") redirect("/");
 
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -32,7 +35,7 @@ export default async function NewSalePage() {
           >
             ← Back to dashboard
           </Link>
-          <h1 className="text-3xl font-semibold tracking-tight">New sale</h1>
+          <h1 className="text-3xl font-semibold tracking-tight">Menu</h1>
         </div>
         <LowStockBadge />
       </header>

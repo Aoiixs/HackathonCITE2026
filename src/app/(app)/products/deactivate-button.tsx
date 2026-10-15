@@ -31,7 +31,7 @@ export function DeactivateButton({
           <input type="hidden" name="id" value={productId} />
           <p className="font-medium">Deactivate {productName}?</p>
           <p className="text-sm text-muted-foreground">
-            It will disappear from New sale. Past sales and history keep it.
+            It will disappear from the employee Menu. Past sales and history keep it.
             Nothing is deleted.
           </p>
           <div className="flex justify-end gap-2">

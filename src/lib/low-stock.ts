@@ -28,6 +28,24 @@ type Row = {
 };
 
 /**
+ * How many active products are below their minimum right now. This is the
+ * same test the Products table and History use (stock < minimum), so the
+ * count always matches what people see in the tables.
+ */
+export async function getLowStockCount(): Promise<number> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("current_stock, minimum_stock")
+    .eq("is_active", true);
+  if (error) {
+    console.error("Could not count low-stock products:", error.message);
+    return 0;
+  }
+  return (data ?? []).filter((p) => p.current_stock < p.minimum_stock).length;
+}
+
+/**
  * Open and flagged alerts for products that are still on sale, furthest
  * below their minimum first (a product at 1 of 10 comes before 4 of 5).
  * Row Level Security lets both roles read these.

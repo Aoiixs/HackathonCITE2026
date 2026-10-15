@@ -34,7 +34,7 @@ const CHIPS = [
 ];
 
 const selectClass =
-  "flex h-10 w-full rounded-[var(--radius)] border border-input bg-background px-3 py-2 text-base md:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+  "flex h-10 w-full rounded-[var(--radius)] border border-input bg-card px-3 py-2 text-base md:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
 // The address a link should open: the current filters, with some changed.
 function hrefFor(filters: Filters, changes: Partial<Filters> & { shown?: number }) {
@@ -52,18 +52,22 @@ function TypePill({ movement }: { movement: Movement }) {
   const { type, reason } = movement;
   const [label, tone] =
     type === "sale"
-      ? ["Sale", "bg-teal-100 text-teal-900"]
+      ? ["Sale", "bg-[#dcefe6] text-[#1f6b4a]"]
       : type === "stock_in"
-        ? ["Stock-in", "bg-blue-100 text-blue-900"]
+        ? ["Stock-in", "bg-[#dcebfa] text-[#1e4e8c]"]
         : type === "stock_out"
           ? [
               reason ? `Stock-out · ${reason[0].toUpperCase()}${reason.slice(1)}` : "Stock-out",
-              "bg-red-100 text-red-900",
+              "bg-[#fbe3de] text-[#a33a26]",
             ]
           : [
-              // Adjustments, initial stock and voids have no colour of their own.
+              // Voids have no colour of their own.
               { adjustment: "Adjustment", initial: "Initial", void: "Void" }[type] ?? type,
-              "bg-secondary text-secondary-foreground",
+              type === "initial"
+                ? "bg-[#e6e9f2] text-[#3b4a6b]"
+                : type === "adjustment"
+                  ? "bg-[#f1e8fa] text-[#5b3a8a]"
+                  : "bg-secondary text-secondary-foreground",
             ];
   return (
     <span className={cn("inline-block rounded-full px-2.5 py-0.5 text-xs font-medium", tone)}>
@@ -132,10 +136,10 @@ export function MovementHistory({
             href={hrefFor(filters, { type: chip.value })}
             aria-current={filters.type === chip.value ? "true" : undefined}
             className={cn(
-              "rounded-full border border-border px-4 py-2 text-sm font-medium",
+              "rounded-full border border-input px-4 py-2 text-sm font-medium",
               filters.type === chip.value
-                ? "bg-primary text-primary-foreground"
-                : "hover:bg-secondary",
+                ? "border-primary bg-primary text-primary-foreground"
+                : "bg-card hover:bg-secondary",
             )}
           >
             {chip.label}
@@ -146,7 +150,7 @@ export function MovementHistory({
       <Card>
         <CardContent className="overflow-x-auto p-0">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-border text-muted-foreground">
+            <thead className="border-b border-divider text-muted-foreground">
               <tr>
                 <th className="px-4 py-3 font-medium">Date</th>
                 <th className="px-4 py-3 font-medium">Product</th>
@@ -158,7 +162,7 @@ export function MovementHistory({
             </thead>
             <tbody>
               {movements.map((m) => (
-                <tr key={m.id} className="border-b border-border last:border-0">
+                <tr key={m.id} className="border-b border-divider last:border-0">
                   <td className="px-4 py-3">
                     {formatShortManila(m.createdAt)}
                     {/* Stock in and out can be dated earlier than when they were typed in. */}
@@ -179,7 +183,12 @@ export function MovementHistory({
                   <td className="px-4 py-3">
                     <TypePill movement={m} />
                   </td>
-                  <td className="px-4 py-3 text-right font-semibold text-blue-700">
+                  <td
+                    className={cn(
+                      "px-4 py-3 text-right font-semibold",
+                      m.change > 0 && "text-primary",
+                    )}
+                  >
                     {m.change > 0 ? "+" : "−"}
                     {Math.abs(m.change)}
                   </td>

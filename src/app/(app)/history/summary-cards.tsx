@@ -31,7 +31,7 @@ export function SummaryCards({
       <Card>
         <CardHeader>
           <CardTitle className="text-base text-muted-foreground">
-            {mine}total sales
+            {mine ? `${mine}total sales` : "Total sales"}
           </CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
@@ -57,7 +57,7 @@ export function SummaryCards({
                 title={`${formatDateOnly(d.date)}: ${formatPeso(d.cents / 100)}`}
                 className={cn(
                   "min-w-px flex-1 rounded-t-sm",
-                  d.date === today ? "bg-teal-800" : "bg-teal-400",
+                  d.date === today ? "bg-primary" : "bg-bar",
                 )}
                 style={{
                   height: d.cents > 0 ? `${Math.max((d.cents / tallest) * 100, 4)}%` : "2px",
@@ -89,9 +89,9 @@ export function SummaryCards({
                     <span className="font-medium">{name}</span>
                     <span className="text-muted-foreground">{quantity} sold</span>
                   </div>
-                  <div className="h-2 rounded-full bg-secondary">
+                  <div className="h-2 rounded-full bg-track">
                     <div
-                      className="h-2 rounded-full bg-teal-600"
+                      className="h-2 rounded-full bg-primary"
                       style={{ width: `${(quantity / topQuantity) * 100}%` }}
                     />
                   </div>
@@ -102,7 +102,7 @@ export function SummaryCards({
         </CardContent>
       </Card>
 
-      <Card className="border-amber-500">
+      <Card className="border-[#e9b949]">
         <CardHeader>
           <CardTitle className="text-base text-muted-foreground">
             Low-stock items
@@ -116,7 +116,7 @@ export function SummaryCards({
               {lowProducts.map((p) => (
                 <li key={p.id} className="flex justify-between gap-3">
                   <span className="font-medium">{p.name}</span>
-                  <span className="font-semibold text-amber-700">
+                  <span className="font-semibold text-[#8a5a0b]">
                     {p.stock} of {p.minimum}
                   </span>
                 </li>
