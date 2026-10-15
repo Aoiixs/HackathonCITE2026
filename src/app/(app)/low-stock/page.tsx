@@ -64,7 +64,7 @@ export default async function LowStockPage({
                 <th className="px-4 py-3 text-right font-medium">Minimum</th>
                 <th className="px-4 py-3 font-medium">Status</th>
                 {isManager && (
-                  <th className="px-4 py-3 text-right font-medium">Actions</th>
+                  <th className="px-4 py-3 text-center font-medium">Actions</th>
                 )}
               </tr>
             </thead>
@@ -86,7 +86,7 @@ export default async function LowStockPage({
                   </td>
                   {isManager && (
                     <td className="px-4 py-2">
-                      <div className="flex flex-wrap justify-end gap-2">
+                      <div className="flex flex-wrap justify-center gap-2">
                       {a.status === "open" && (
                         <form action={flagAlert}>
                           <input type="hidden" name="alert_id" value={a.id} />

@@ -216,7 +216,7 @@ export default async function DashboardPage() {
                   )}
                   <th className="px-4 py-3 font-medium">Status</th>
                   {isManager && (
-                    <th className="px-4 py-3 text-right font-medium">Actions</th>
+                    <th className="px-4 py-3 text-center font-medium">Actions</th>
                   )}
                 </tr>
               </thead>
@@ -234,7 +234,7 @@ export default async function DashboardPage() {
                       <StockStatusPill low={p.current_stock < p.minimum_stock} />
                     </td>
                     {isManager && (
-                      <td className="px-4 py-2 text-right">
+                      <td className="px-4 py-2 text-center">
                         <Link
                           href={`/products/${p.id}/edit`}
                           className={buttonVariants({ variant: "outline", size: "sm" })}

@@ -153,7 +153,7 @@ export default async function ProductsPage({
                 <th className="px-4 py-3 text-right font-medium">Stock</th>
                 <th className="px-4 py-3 text-right font-medium">Minimum</th>
                 <th className="px-4 py-3 font-medium">Status</th>
-                <th className="px-4 py-3 text-right font-medium">Actions</th>
+                <th className="px-4 py-3 text-center font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -170,7 +170,7 @@ export default async function ProductsPage({
                   <td className="px-4 py-2">
                     {/* The buttons sit in a div: making the <td> itself
                         flex would pull it out of the table's columns. */}
-                    <div className="flex flex-nowrap items-center justify-end gap-2 whitespace-nowrap">
+                    <div className="flex flex-nowrap items-center justify-center gap-2 whitespace-nowrap">
                     <Link
                       href={`/products/${p.id}/edit`}
                       className={buttonVariants({ variant: "outline", size: "sm" })}

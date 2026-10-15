@@ -50,7 +50,7 @@ export function SalesList({
                 <th className="px-4 py-3 text-right font-medium">Total</th>
                 <th className="px-4 py-3 font-medium">Payment</th>
                 <th className="px-4 py-3 font-medium">Status</th>
-                <th className="px-4 py-3 text-right font-medium">Actions</th>
+                <th className="px-4 py-3 text-center font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -64,7 +64,7 @@ export function SalesList({
                   <td className={cn("px-4 py-3", s.status === "voided" && "text-destructive")}>
                     {s.status === "voided" ? "Voided" : "Completed"}
                   </td>
-                  <td className="px-4 py-2 text-right">
+                  <td className="px-4 py-2 text-center">
                     <Link
                       href={`/history/sales/${s.id}`}
                       className={buttonVariants({ variant: "outline", size: "sm" })}
