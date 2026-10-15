@@ -2,8 +2,7 @@ import Link from "next/link";
 import { getStaff } from "@/lib/auth";
 import { LogoutButton } from "./logout-button";
 
-// Sidebar for managers. Only Dashboard exists so far; the rest are shown
-// greyed out so the menu is visible, and become links as each ticket ships.
+// The manager's menu. (Employees go straight to the Dashboard buttons.)
 const menu = [
   { label: "Dashboard", href: "/" },
   { label: "New sale", href: "/sales/new" },
@@ -20,9 +19,9 @@ export default async function AppLayout({
 
   return (
     <div className="flex min-h-screen flex-1 flex-col">
-      <header className="flex items-center justify-between gap-4 border-b border-border px-6 py-3">
+      <header className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-border px-4 py-3 md:px-6">
         <span className="text-lg font-semibold tracking-tight">StockWise</span>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <p className="text-sm">
             <span className="font-medium">{staff.fullName}</span>
             <span className="text-muted-foreground"> · {staff.role}</span>
@@ -31,33 +30,28 @@ export default async function AppLayout({
         </div>
       </header>
 
-      <div className="flex flex-1">
+      {/* On a phone the menu sits above the page; from tablet width up it
+          becomes a sidebar. */}
+      <div className="flex flex-1 flex-col md:flex-row">
         {staff.role === "manager" && (
-          <aside className="w-56 border-r border-border p-4">
-            <nav aria-label="Main menu" className="flex flex-col gap-1">
-              {menu.map((item) =>
-                item.href ? (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    className="rounded-[var(--radius)] px-3 py-2 text-sm font-medium hover:bg-secondary"
-                  >
-                    {item.label}
-                  </Link>
-                ) : (
-                  <span
-                    key={item.label}
-                    aria-disabled="true"
-                    className="rounded-[var(--radius)] px-3 py-2 text-sm text-muted-foreground"
-                  >
-                    {item.label} <span className="text-xs">(soon)</span>
-                  </span>
-                ),
-              )}
+          <aside className="border-b border-border p-2 md:w-56 md:border-b-0 md:border-r md:p-4">
+            <nav
+              aria-label="Main menu"
+              className="flex flex-wrap gap-1 md:flex-col"
+            >
+              {menu.map((item) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="rounded-[var(--radius)] px-3 py-2 text-sm font-medium hover:bg-secondary"
+                >
+                  {item.label}
+                </Link>
+              ))}
             </nav>
           </aside>
         )}
-        <main className="flex-1 p-6">{children}</main>
+        <main className="min-w-0 flex-1 p-4 md:p-6">{children}</main>
       </div>
     </div>
   );

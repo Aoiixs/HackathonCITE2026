@@ -1,16 +1,28 @@
 import { getStaff } from "@/lib/auth";
 import { getLowStockAlerts } from "@/lib/low-stock";
 import { Button } from "@/components/ui/button";
+import { Toast } from "@/components/toast";
 import { Card, CardContent } from "@/components/ui/card";
 import { flagAlert, resolveAlert } from "./actions";
 
-export default async function LowStockPage() {
+export default async function LowStockPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ failed?: string }>;
+}) {
+  const { failed } = await searchParams;
   const staff = await getStaff();
   const isManager = staff.role === "manager";
   const alerts = await getLowStockAlerts();
 
   return (
     <div className="flex flex-col gap-6">
+      {failed && (
+        <Toast
+          message="Could not update that alert. Nothing was changed."
+          tone="error"
+        />
+      )}
       <header className="flex flex-col gap-1">
         <h1 className="text-3xl font-semibold tracking-tight">Low stock</h1>
         <p className="text-muted-foreground">

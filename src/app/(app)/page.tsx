@@ -132,7 +132,15 @@ export default async function DashboardPage() {
                   <th className="px-4 py-3 font-medium">Category</th>
                   <th className="px-4 py-3 text-right font-medium">Price</th>
                   <th className="px-4 py-3 text-right font-medium">Stock</th>
+                  {isManager && (
+                    <th className="px-4 py-3 text-right font-medium">Minimum</th>
+                  )}
                   <th className="px-4 py-3 font-medium">Status</th>
+                  {isManager && (
+                    <th className="px-4 py-3 font-medium">
+                      <span className="sr-only">Actions</span>
+                    </th>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -142,6 +150,9 @@ export default async function DashboardPage() {
                     <td className="px-4 py-3">{p.category}</td>
                     <td className="px-4 py-3 text-right">{formatPeso(p.price)}</td>
                     <td className="px-4 py-3 text-right">{p.current_stock}</td>
+                    {isManager && (
+                      <td className="px-4 py-3 text-right">{p.minimum_stock}</td>
+                    )}
                     <td className="px-4 py-3">
                       {p.current_stock < p.minimum_stock ? (
                         <span className="font-medium text-amber-700">Low stock</span>
@@ -149,11 +160,24 @@ export default async function DashboardPage() {
                         "In stock"
                       )}
                     </td>
+                    {isManager && (
+                      <td className="px-4 py-2 text-right">
+                        <Link
+                          href={`/products/${p.id}/edit`}
+                          className={buttonVariants({ variant: "outline", size: "sm" })}
+                        >
+                          Edit
+                        </Link>
+                      </td>
+                    )}
                   </tr>
                 ))}
                 {products.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">
+                    <td
+                      colSpan={isManager ? 7 : 5}
+                      className="px-4 py-8 text-center text-muted-foreground"
+                    >
                       No active products yet.
                     </td>
                   </tr>
@@ -162,6 +186,44 @@ export default async function DashboardPage() {
             </table>
           </CardContent>
         </Card>
+
+        <div className="flex flex-col gap-6">
+        {isManager && (
+          <Card className="h-fit">
+            <CardHeader>
+              <CardTitle>Open alerts</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
+              {lowStockAlerts.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  Nothing is running low.
+                </p>
+              ) : (
+                <ul className="flex flex-col gap-3 text-sm">
+                  {lowStockAlerts.slice(0, 5).map((a) => (
+                    <li key={a.id} className="flex justify-between gap-3">
+                      <span className="flex flex-col">
+                        <span className="font-medium">{a.product.name}</span>
+                        <span className="text-muted-foreground">
+                          {a.status === "flagged" ? "Flagged for restocking" : "Open"}
+                        </span>
+                      </span>
+                      <span className="font-semibold text-amber-700">
+                        {a.product.currentStock} / {a.product.minimumStock}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <Link
+                href="/low-stock"
+                className={buttonVariants({ variant: "outline", size: "sm" })}
+              >
+                Manage alerts
+              </Link>
+            </CardContent>
+          </Card>
+        )}
 
         <Card className="h-fit">
           <CardHeader>
@@ -189,6 +251,7 @@ export default async function DashboardPage() {
             )}
           </CardContent>
         </Card>
+        </div>
       </div>
     </div>
   );

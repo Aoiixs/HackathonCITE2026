@@ -111,6 +111,15 @@ export function PosScreen({ products }: { products: PosProduct[] }) {
     setPhase("receipt");
   }
 
+  // Escape fires "cancel" just before the window closes. If a low-stock
+  // warning is waiting, show it instead of letting Escape skip it.
+  function keepWarningOnEscape(event: React.SyntheticEvent<HTMLDialogElement>) {
+    if (receipt && phase === "receipt" && receipt.lowStock.length > 0) {
+      event.preventDefault();
+      setPhase("low");
+    }
+  }
+
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_26rem]">
       {/* Left: the products */}
@@ -291,6 +300,7 @@ export function PosScreen({ products }: { products: PosProduct[] }) {
       {/* The receipt */}
       <dialog
         ref={dialogRef}
+        onCancel={keepWarningOnEscape}
         onClose={startFresh}
         className="m-auto w-full max-w-md rounded-[var(--radius)] border border-border bg-card p-6 text-card-foreground backdrop:bg-black/40"
       >

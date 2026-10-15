@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { requireManager } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 
@@ -17,7 +18,10 @@ async function runAlertFunction(
 
   const supabase = await createClient();
   const { error } = await supabase.rpc(fn, { p_alert_id: alertId });
-  if (error) console.error(`${fn} failed:`, error.message);
+  if (error) {
+    console.error(`${fn} failed:`, error.message);
+    redirect("/low-stock?failed=1");
+  }
 
   revalidatePath("/low-stock");
   revalidatePath("/");

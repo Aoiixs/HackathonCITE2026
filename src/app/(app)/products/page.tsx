@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AdjustStockButton } from "./adjust-stock-button";
 import { DeactivateButton } from "./deactivate-button";
-import { Toast } from "./toast";
+import { Toast } from "@/components/toast";
 
 type Product = {
   id: string;
@@ -27,6 +27,10 @@ const SAVED_MESSAGES: Record<string, string> = {
   deactivated: "Product deactivated.",
 };
 
+const FAILED_MESSAGES: Record<string, string> = {
+  deactivate: "Could not deactivate the product. Nothing was changed.",
+};
+
 const selectClass =
   "flex h-10 w-full rounded-[var(--radius)] border border-input bg-background px-3 py-2 text-base md:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
@@ -43,11 +47,18 @@ export default async function ProductsPage({
     category?: string;
     status?: string;
     saved?: string;
+    failed?: string;
   }>;
 }) {
   await requireManager(); // an employee is sent back to the Dashboard
 
-  const { q = "", category = "", status = "active", saved } = await searchParams;
+  const {
+    q = "",
+    category = "",
+    status = "active",
+    saved,
+    failed,
+  } = await searchParams;
 
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -70,6 +81,9 @@ export default async function ProductsPage({
   return (
     <div className="flex flex-col gap-6">
       {saved && SAVED_MESSAGES[saved] && <Toast message={SAVED_MESSAGES[saved]} />}
+      {failed && FAILED_MESSAGES[failed] && (
+        <Toast message={FAILED_MESSAGES[failed]} tone="error" />
+      )}
 
       <header className="flex items-center justify-between gap-4">
         <h1 className="text-3xl font-semibold tracking-tight">Manage products</h1>

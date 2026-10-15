@@ -181,11 +181,18 @@ export async function deactivateProduct(formData: FormData) {
   const id = String(formData.get("id") ?? "");
 
   const supabase = await createClient();
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("products")
     .update({ is_active: false })
-    .eq("id", id);
-  if (error) console.error("Deactivate failed:", error.message);
+    .eq("id", id)
+    .select("id");
+
+  // Row Level Security hides a row without raising an error, so also check
+  // that a row really changed before saying it worked.
+  if (error || !data?.length) {
+    if (error) console.error("Deactivate failed:", error.message);
+    redirect("/products?failed=deactivate");
+  }
 
   redirect("/products?saved=deactivated");
 }
