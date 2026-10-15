@@ -5,8 +5,43 @@ import { formatPeso } from "@/lib/format";
 import { formatManila, startOfTodayManila } from "@/lib/time";
 import { getLowStockAlerts } from "@/lib/low-stock";
 import { LowStockBadge } from "@/components/low-stock-badge";
+import {
+  Banknote,
+  Boxes,
+  ChartColumn,
+  Package,
+  Receipt,
+  ShoppingCart,
+  TriangleAlert,
+  type LucideIcon,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+// A card title with a small icon in front. The icon is decoration only
+// (aria-hidden), so screen readers still hear just the words.
+function IconTitle({
+  icon: Icon,
+  muted = false,
+  children,
+}: {
+  icon: LucideIcon;
+  muted?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <CardTitle
+      className={cn(
+        "flex items-center gap-2",
+        muted && "text-base text-muted-foreground",
+      )}
+    >
+      <Icon className="size-4 shrink-0" aria-hidden="true" />
+      {children}
+    </CardTitle>
+  );
+}
 
 type Product = {
   id: string;
@@ -73,10 +108,12 @@ export default async function DashboardPage() {
               href="/history"
               className={buttonVariants({ variant: "outline", size: "lg" })}
             >
+              <ChartColumn className="size-4" aria-hidden="true" />
               History
             </Link>
           )}
           <Link href="/sales/new" className={buttonVariants({ size: "lg" })}>
+            <ShoppingCart className="size-4" aria-hidden="true" />
             New sale
           </Link>
         </div>
@@ -85,9 +122,9 @@ export default async function DashboardPage() {
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <Card>
           <CardHeader>
-            <CardTitle className="text-base text-muted-foreground">
+            <IconTitle icon={Banknote} muted>
               {isManager ? "Sales today (all staff)" : "Your sales today"}
-            </CardTitle>
+            </IconTitle>
           </CardHeader>
           <CardContent className="text-3xl font-semibold">
             {formatPeso(todayCents / 100)}
@@ -95,9 +132,9 @@ export default async function DashboardPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="text-base text-muted-foreground">
+            <IconTitle icon={Receipt} muted>
               {isManager ? "Orders today (all staff)" : "Your orders today"}
-            </CardTitle>
+            </IconTitle>
           </CardHeader>
           <CardContent className="text-3xl font-semibold">
             {todaySales.length}
@@ -105,9 +142,9 @@ export default async function DashboardPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="text-base text-muted-foreground">
+            <IconTitle icon={TriangleAlert} muted>
               Low-stock items
-            </CardTitle>
+            </IconTitle>
           </CardHeader>
           <CardContent className="text-3xl font-semibold">
             {lowStockAlerts.length}
@@ -116,9 +153,9 @@ export default async function DashboardPage() {
         {isManager && (
           <Card>
             <CardHeader>
-              <CardTitle className="text-base text-muted-foreground">
+              <IconTitle icon={Boxes} muted>
                 Active products
-              </CardTitle>
+              </IconTitle>
             </CardHeader>
             <CardContent className="text-3xl font-semibold">
               {products.length}
@@ -130,7 +167,7 @@ export default async function DashboardPage() {
       <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
         <Card>
           <CardHeader>
-            <CardTitle>Products</CardTitle>
+            <IconTitle icon={Package}>Products</IconTitle>
           </CardHeader>
           <CardContent className="overflow-x-auto p-0">
             <table className="w-full text-left text-sm">
@@ -199,7 +236,7 @@ export default async function DashboardPage() {
         {isManager && (
           <Card className="h-fit">
             <CardHeader>
-              <CardTitle>Open alerts</CardTitle>
+              <IconTitle icon={TriangleAlert}>Open alerts</IconTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
               {lowStockAlerts.length === 0 ? (
@@ -235,9 +272,9 @@ export default async function DashboardPage() {
 
         <Card className="h-fit">
           <CardHeader>
-            <CardTitle>
+            <IconTitle icon={Receipt}>
               {isManager ? "Latest 5 sales" : "Your latest 5 sales"}
-            </CardTitle>
+            </IconTitle>
           </CardHeader>
           <CardContent>
             {recent.length === 0 ? (

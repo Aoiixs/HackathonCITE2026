@@ -1,16 +1,26 @@
 import Link from "next/link";
+import {
+  ChartColumn,
+  LayoutDashboard,
+  Package,
+  PackageMinus,
+  PackagePlus,
+  ShoppingCart,
+  TriangleAlert,
+  type LucideIcon,
+} from "lucide-react";
 import { getStaff } from "@/lib/auth";
 import { LogoutButton } from "./logout-button";
 
 // The manager's menu. (Employees go straight to the Dashboard buttons.)
-const menu = [
-  { label: "Dashboard", href: "/" },
-  { label: "New sale", href: "/sales/new" },
-  { label: "Manage products", href: "/products" },
-  { label: "Stock in", href: "/stock-in" },
-  { label: "Stock out", href: "/stock-out" },
-  { label: "Low stock", href: "/low-stock" },
-  { label: "History & reports", href: "/history" },
+const menu: { label: string; href: string; icon: LucideIcon }[] = [
+  { label: "Dashboard", href: "/", icon: LayoutDashboard },
+  { label: "New sale", href: "/sales/new", icon: ShoppingCart },
+  { label: "Manage products", href: "/products", icon: Package },
+  { label: "Stock in", href: "/stock-in", icon: PackagePlus },
+  { label: "Stock out", href: "/stock-out", icon: PackageMinus },
+  { label: "Low stock", href: "/low-stock", icon: TriangleAlert },
+  { label: "History & reports", href: "/history", icon: ChartColumn },
 ];
 
 export default async function AppLayout({
@@ -42,13 +52,15 @@ export default async function AppLayout({
               aria-label="Main menu"
               className="flex flex-wrap gap-1 md:flex-col"
             >
-              {menu.map((item) => (
+              {menu.map(({ label, href, icon: Icon }) => (
                 <Link
-                  key={item.label}
-                  href={item.href}
-                  className="rounded-[var(--radius)] px-3 py-2 text-sm font-medium hover:bg-secondary"
+                  key={label}
+                  href={href}
+                  className="flex items-center gap-2 rounded-[var(--radius)] px-3 py-2 text-sm font-medium hover:bg-secondary"
                 >
-                  {item.label}
+                  {/* aria-hidden: the icon is decoration; the word is the label. */}
+                  <Icon className="size-4 shrink-0" aria-hidden="true" />
+                  {label}
                 </Link>
               ))}
             </nav>

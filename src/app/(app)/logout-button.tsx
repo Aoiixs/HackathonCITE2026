@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { signOut } from "@/app/login/actions";
 
@@ -15,6 +16,7 @@ export function LogoutButton() {
         size="sm"
         onClick={() => dialogRef.current?.showModal()}
       >
+        <LogOut className="size-4" aria-hidden="true" />
         Log out
       </Button>
       <dialog

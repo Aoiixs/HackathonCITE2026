@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { TriangleAlert } from "lucide-react";
 import { getLowStockAlerts } from "@/lib/low-stock";
 import { cn } from "@/lib/utils";
 
@@ -16,6 +17,7 @@ export async function LowStockBadge() {
           : "border-border text-muted-foreground",
       )}
     >
+      <TriangleAlert className="size-4" aria-hidden="true" />
       Low stock
       <span
         className={cn(
