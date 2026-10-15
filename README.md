@@ -1,118 +1,159 @@
-# PHINMA AI Builder — team template
+# StockWise — Nexora Order & Stock Tracker
 
-**Your live URL:** https://hackathon-cite-2026.vercel.app
+**Live URL:** https://hackathon-cite-2026.vercel.app
 
-This is your team's starting point. It is already a working Next.js app
-that deploys to Vercel. You will delete the starter page and build your
-own thing on top.
+StockWise is an order and stock tracker for the Nexora food business, Ortiz
+branch. The employee taps the products in a customer's order and gives a
+receipt, the stock drops by itself, and the manager is warned before a
+product runs out.
 
-## Setup (once per team, ~10 minutes)
+Built from the PHINMA AI Builder team template: Next.js (App Router) and
+TypeScript, Tailwind CSS, Supabase (database and login) and Vercel (hosting).
 
-**1. Make your own copy**
+## The two roles
 
-On this repo's GitHub page, click **Use this template → Create a new
-repository**. Name it after your team. Then add your teammates:
-**Settings → Collaborators**.
+- **Employee** — the only role that sells. Takes orders with **New sale**,
+  gives receipts, sees their own sales, and sees the **Low stock** list
+  (view only).
+- **Manager** — does not sell. Manages products, records stock in and stock
+  out, recounts stock, flags and resolves low-stock alerts, and sees every
+  employee's sales and all reports.
 
-**2. Put it on the internet — before writing any code**
+Both sign in with email and password. Accounts are made by the team in
+Supabase, and there is no sign-up page.
 
-Go to [vercel.com](https://vercel.com), sign in with GitHub, then
-**Add New → Project** and import your new repo. Accept the defaults and
-click **Deploy**.
+## Project documents
 
-In about a minute you will have a live URL. Open it on your phone. Paste
-it at the top of this file.
+- [`docs/PROBLEM.md`](docs/PROBLEM.md) — the problem, the person, the MVP cut
+- [`docs/PITCH.md`](docs/PITCH.md) — the 10-minute pitch and demo walk-through
+- [`docs/SPEC.md`](docs/SPEC.md) — what we are building (screens, data, rules)
+- [`docs/LATER.md`](docs/LATER.md) — good ideas that are not in the MVP
+- [`docs/tickets/`](docs/tickets/) — one file per ticket
 
-From now on, every push to `main` updates that URL automatically.
+## Run it locally
 
-**3. Get it on your laptop**
-
-Only one laptop per team needs this — the **driver** laptop. Rotate who
-drives at every ticket so everyone gets a turn.
+You need [Node.js](https://nodejs.org) and Git.
 
 ```bash
 git clone <your repo URL>
 cd <your repo>
 npm install
+```
+
+Create your local settings file from the template (PowerShell, then Git
+Bash or macOS/Linux):
+
+```powershell
+Copy-Item .env.example .env.local
+```
+
+```bash
+cp .env.example .env.local
+```
+
+Open `.env.local` and fill in the two variables below, then start the app:
+
+```bash
 npm run dev
 ```
 
-Open http://localhost:3000. You should see the same page as your live
-URL.
+Open http://localhost:3000. Before pushing, run `npm run build` and
+`npm run lint`. `npm run build` is the exact command Vercel runs.
 
-**4. Start Claude Code**
+### The two environment variables
 
-```bash
-claude
+The app needs exactly these two, in `.env.local` **and** in Vercel
+(**Settings → Environment Variables**, then redeploy):
+
+| Name                            | Where to find it in Supabase                                   |
+|---------------------------------|----------------------------------------------------------------|
+| `NEXT_PUBLIC_SUPABASE_URL`      | Your project → **Connect** → Project URL                       |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your project → **Connect** → publishable key (`sb_publishable_…`) |
+
+Never add the `service_role` key or any `sb_secret_` key to this project,
+and never commit `.env.local`.
+
+## Set up the database (Supabase)
+
+Use a **hosted** Supabase project (free tier). Do not run Supabase locally.
+
+1. In Supabase, go to **Authentication → Users → Add user** and create one
+   manager and one employee (tick **Auto Confirm User**). Turn sign-ups off.
+2. Run the files in [`supabase/sql/`](supabase/sql/) **one at a time, in
+   this order**: Supabase → **SQL Editor → New query → paste → Run**.
+
+| File | What it does |
+|------|--------------|
+| `002-create-profiles.sql` | Staff profiles (name, role, active) |
+| `003-staff-accounts-and-helpers.sql` | Role helpers, and the profiles for your two accounts |
+| `004-create-products.sql` | Products, stock history, `create_product` |
+| `005-create-sales.sql` | Sales and receipts |
+| `006-create-low-stock-alerts.sql` | Low-stock alerts and the re-check rule |
+| `007-adjust-stock.sql` | Manager stock recount |
+| `008-stock-in-and-out.sql` | Stock in and stock out |
+| `009-managers-read-profiles.sql` | Managers can read all profiles |
+| `010-sales-report.sql` | Totals for History & reports |
+| `011-low-stock-always-rechecked.sql` | Alerts can never drift from the stock |
+| `012-profiles-avatar.sql` | Profile picture column |
+| `013-set-sample-avatars.sql` | Optional: give the two accounts a sample picture |
+| `015-complete-sale-employees-only.sql` | Only employees can sell (replaces `complete_sale` from 006) |
+
+Things to know:
+
+- **`003` and `013` contain placeholders** for the two emails and names.
+  Replace them in the SQL Editor only. Never save real emails into the
+  file, and never commit a filled-in version.
+- **Skip `001`** (a commented-out example). **Run `005b` only** if a sale
+  fails because the sales tables are missing (it repeats the tables from
+  005).
+- Every table has Row Level Security on, with explicit policies. Stock and
+  sales can only change through database functions, never by direct writes.
+- There may also be a local-only reset script, `014-clear-business-data.sql`.
+  It deletes all products, sales and history, and it is deliberately kept
+  out of git. It is not part of setup.
+
+## Demo data (sample data, not real sales)
+
+For a rehearsal or a demo you can fill the app with made-up history. Both
+scripts live in [`supabase/seed/`](supabase/seed/) and run in the same SQL
+Editor.
+
+- **Load it:** run `demo-data.sql` after the setup above (it needs files
+  002 to 010 and one active manager and one active employee). It builds 11
+  products and 15 days of sales ending **today** (Manila time), so run it
+  on the day you present. Receipts start with `DEMO-`, every sale belongs to
+  the employee, and four products end up low on stock. It refuses to run
+  twice.
+- **Remove it:** run `remove-demo-data.sql`. It removes only the sample
+  data. Sales you made yourself, such as rehearsal orders, stay.
+- **Never present demo sales as real.**
+
+## Where things live
+
+```
+src/app/(app)/            the signed-in screens (dashboard, sales, products, stock, history)
+src/app/login/            the Sign in page
+src/components/ui/        Button, Card, Input, Textarea, Label
+src/lib/supabase/         the database clients, with comments on which to use where
+supabase/sql/             every database change, numbered
+supabase/seed/            demo data and its remover
+docs/                     problem, pitch, spec, later and tickets
+CLAUDE.md                 the rules the AI agent follows
 ```
 
-Type `/` and check you can see `grill-with-docs`, `pitch`, `to-spec`,
-`to-tickets`, `implement` and `code-review`. If you can, you are ready.
-
-Then run:
-
-```
-/grill-with-docs
-```
-
-Have a real problem in mind, and a real person you have watched struggle
-with it. You will be asked.
-
-## Supabase (Ticket 02 — Session 2, not before)
-
-1. Create a project at [supabase.com](https://supabase.com) (free tier).
-2. In your project, click **Connect** and copy the Project URL and the
-   **publishable key** (it starts with `sb_publishable_`). Older projects
-   call it the `anon` key. Either works.
-3. Copy `.env.example` to `.env.local` and paste them in. The publishable
-   key goes in `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
-4. Add the **same two variables** in Vercel: **Settings → Environment
-   Variables**, then redeploy. Forgetting this step is the single most
-   common reason the local app works and the live one does not.
-   The app needs exactly these two variables, in `.env.local` and in Vercel:
-
-   | Name                             | Value                                  |
-   |----------------------------------|----------------------------------------|
-   | `NEXT_PUBLIC_SUPABASE_URL`       | Project URL from **Connect**           |
-   | `NEXT_PUBLIC_SUPABASE_ANON_KEY`  | Publishable key (`sb_publishable_...`) |
-
-   Never add the `service_role` key or any `sb_secret_` key.
-5. Read `supabase/sql/001-example.sql`. It explains Row Level Security,
-   which is what stops strangers reading your data.
-
-## The commands
+## The workflow
 
 | Command            | What it does                                      |
 |--------------------|---------------------------------------------------|
-| `/grill-with-docs` | Interviews you hard about the problem. Start here |
-| `/pitch`           | Turns that into your three-minute Session 1 pitch |
+| `/grill-with-docs` | Interviews you hard about the problem             |
+| `/pitch`           | Turns that into your pitch                        |
 | `/to-spec`         | Writes the spec for what you will build           |
 | `/to-tickets`      | Breaks the spec into small tickets                |
 | `/implement`       | Builds one ticket, then deploys it                |
 | `/code-review`     | Checks it is correct and safe before you demo     |
 
-Run them in that order. The agent will refuse to write feature code
-before there is a spec — that is deliberate, not a bug.
-
-## The rules
-
-1. **Deploy first.** Live URL before features.
-2. **No spec, no code.**
-3. **One user, one job, demoable in three minutes.**
-4. **Row Level Security on, always.** Your app is public. Without RLS,
-   so is your data.
-5. **Never commit `.env.local`.**
-
-## What is already here
-
-```
-src/app/page.tsx          the starter page — delete it and build yours
-src/components/ui/        Button, Card, Input, Textarea, Label
-src/lib/supabase/         database clients, with comments
-supabase/sql/             your database changes, numbered
-docs/                     problem, pitch, spec and tickets live here
-CLAUDE.md                 the rules the agent follows
-```
+The agent will refuse to write feature code before there is a spec. That is
+deliberate.
 
 ## When something breaks
 
@@ -127,3 +168,12 @@ CLAUDE.md                 the rules the agent follows
 - **The agent keeps failing at the same thing** — stop it, and ask it to
   explain what it thinks is wrong instead of trying again. Then get a
   facilitator.
+
+## The rules
+
+1. **Deploy first.** Live URL before features.
+2. **No spec, no code.**
+3. **One user, one job, demoable in three minutes.**
+4. **Row Level Security on, always.** Your app is public. Without RLS,
+   so is your data.
+5. **Never commit `.env.local`.**
