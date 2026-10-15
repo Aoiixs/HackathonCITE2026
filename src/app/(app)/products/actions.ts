@@ -196,5 +196,23 @@ export async function deactivateProduct(formData: FormData) {
     redirect("/products?failed=deactivate");
   }
 
+  // An inactive product's alert is hidden from the Low stock list. Resolve
+  // it too, so it does not sit open and invisible. Resolving goes through
+  // the manager-only database function; a failure here is logged, not
+  // shown, because the product itself is already deactivated.
+  const { data: alerts } = await supabase
+    .from("low_stock_alerts")
+    .select("id")
+    .eq("product_id", id)
+    .in("status", ["open", "flagged"]);
+  for (const alert of alerts ?? []) {
+    const { error: resolveError } = await supabase.rpc("resolve_low_stock_alert", {
+      p_alert_id: alert.id,
+    });
+    if (resolveError) console.error("Could not resolve alert:", resolveError.message);
+  }
+
+  revalidatePath("/");
+  revalidatePath("/low-stock");
   redirect("/products?saved=deactivated");
 }

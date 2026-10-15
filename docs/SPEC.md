@@ -237,7 +237,7 @@ Table and column names are decisions; use them exactly.
   all-or-nothing step, never a direct table write from the app. The app
   can never update `current_stock` directly; this is blocked in the
   database, not just left out of the screens.
-- `complete_sale(items, amount_received, payment_method)`: lock the
+- `complete_sale(items, amount_received, payment_method)`: employee only; lock the
   product rows, refuse if any quantity exceeds stock, insert sales and
   sale_items, lower current_stock, insert one 'sale' movement per item,
   re-check alerts. Totals, change, line totals and remaining_stock are
@@ -274,11 +274,10 @@ Table and column names are decisions; use them exactly.
   `void_sale` in Stage 2), flag and resolve alerts, read all sales,
   sale_items and movements, and read all profiles (reading only; no
   profile updates are granted).
-- **Managers do not sell. This rule is enforced in the app, not in the
-  database:** the New sale page and `completeSale` refuse managers, but
-  the `complete_sale` function accepts any active staff. This is a known
-  gap, left unchanged by decision. It cannot be reached from the screens,
-  only by calling the database directly.
+- **Managers do not sell.** The New sale page and the sale action refuse
+  managers, and the database does too: `complete_sale` (as replaced in
+  `supabase/sql/015-complete-sale-employees-only.sql`) accepts active
+  employees only and raises error 42501 for anyone else.
 - Nobody can update or delete sales, sale_items or inventory_movements,
   except a manager voiding a sale through `void_sale`.
 - Nobody can delete products or profiles.

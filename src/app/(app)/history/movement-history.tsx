@@ -25,7 +25,7 @@ export type Filters = {
   from: string;
   to: string;
   product: string;
-  type: string; // "", "sale", "stock_in" or "stock_out"
+  type: string; // "" (all), or one of the CHIPS values below
 };
 
 const CHIPS = [
@@ -33,6 +33,8 @@ const CHIPS = [
   { value: "sale", label: "Sale" },
   { value: "stock_in", label: "Stock-in" },
   { value: "stock_out", label: "Stock-out" },
+  { value: "adjustment", label: "Adjustment" },
+  { value: "initial", label: "Initial" },
 ];
 
 const selectClass =

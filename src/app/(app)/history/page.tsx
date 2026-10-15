@@ -19,7 +19,7 @@ import { buttonVariants } from "@/components/ui/button";
 const PAGE_SIZE = 25;
 const SALES_SHOWN = 100;
 const CHART_DAYS = 62; // the chart never shows more than this many bars
-const MOVEMENT_TYPES = ["sale", "stock_in", "stock_out"];
+const MOVEMENT_TYPES = ["sale", "stock_in", "stock_out", "adjustment", "initial"];
 
 // The database hands back a joined row either as one object or a list of one.
 type Joined<T> = T | T[] | null;
