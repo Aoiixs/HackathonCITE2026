@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AdjustStockButton } from "./adjust-stock-button";
 import { ActivePill } from "@/components/status-pill";
-import { FilterForm } from "./filter-form";
+import { FilterForm } from "@/components/filter-form";
 import { DeactivateButton } from "./deactivate-button";
 import { Toast } from "@/components/toast";
 import { PageLabel } from "@/components/page-label";

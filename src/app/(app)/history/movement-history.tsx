@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { formatDateOnly, formatShortManila, manilaDateOf } from "@/lib/time";
 import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { FilterForm } from "@/components/filter-form";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -98,8 +99,9 @@ export function MovementHistory({
       <h2 className="text-xl font-semibold">Stock movement history</h2>
 
       {/* A plain form that reloads the page with the filters in the address.
-          The From and To dates also drive the three cards above. */}
-      <form method="get" className="flex flex-wrap items-end gap-3">
+          The From and To dates also drive the three cards above. It submits
+          itself when a filter changes, so there is no Apply button. */}
+      <FilterForm>
         <input type="hidden" name="type" value={filters.type} />
         <div className="flex flex-col gap-2">
           <Label htmlFor="from">From</Label>
@@ -121,13 +123,10 @@ export function MovementHistory({
             ))}
           </select>
         </div>
-        <Button type="submit" variant="secondary">
-          Apply
-        </Button>
         <Link href="/history" className={buttonVariants({ variant: "ghost" })}>
           Reset
         </Link>
-      </form>
+      </FilterForm>
 
       <div className="flex flex-wrap gap-2" role="group" aria-label="Movement type">
         {CHIPS.map((chip) => (
