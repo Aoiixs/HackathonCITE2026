@@ -15,6 +15,7 @@ export type Movement = {
   productInactive: boolean;
   type: string;
   reason: string | null;
+  note: string | null;
   change: number;
   remaining: number;
   employee: string;
@@ -149,14 +150,15 @@ export function MovementHistory({
       <Card>
         <CardContent className="overflow-x-auto p-0">
           {/* Fixed column widths: headers and cells line up exactly. */}
-          <table className="w-full min-w-[760px] table-fixed text-left text-sm">
+          <table className="w-full min-w-[980px] table-fixed text-left text-sm">
             <colgroup>
+              <col className="w-[14%]" />
               <col className="w-[17%]" />
-              <col className="w-[23%]" />
-              <col className="w-[19%]" />
-              <col className="w-[12%]" />
-              <col className="w-[12%]" />
-              <col className="w-[17%]" />
+              <col className="w-[15%]" />
+              <col className="w-[9%]" />
+              <col className="w-[10%]" />
+              <col className="w-[14%]" />
+              <col className="w-[21%]" />
             </colgroup>
             <thead className="border-b border-divider text-muted-foreground">
               <tr>
@@ -166,6 +168,7 @@ export function MovementHistory({
                 <th className="px-4 py-3 text-right font-medium">Quantity</th>
                 <th className="px-4 py-3 text-right font-medium">Remaining</th>
                 <th className="px-4 py-3 font-medium">Employee</th>
+                <th className="px-4 py-3 font-medium">Note</th>
               </tr>
             </thead>
             <tbody>
@@ -202,11 +205,14 @@ export function MovementHistory({
                   </td>
                   <td className="px-4 py-3 text-right">{m.remaining}</td>
                   <td className="px-4 py-3">{m.employee}</td>
+                  <td className="break-words px-4 py-3 text-muted-foreground">
+                    {m.note || "—"}
+                  </td>
                 </tr>
               ))}
               {movements.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">
+                  <td colSpan={7} className="px-4 py-8 text-center text-muted-foreground">
                     No movements for these filters
                   </td>
                 </tr>

@@ -1,3 +1,6 @@
+-- NOTE: the create_product() in this file is SUPERSEDED by the version in
+-- 006-create-low-stock-alerts.sql. The tables and security here are still current.
+
 -- 004 — products and inventory_movements, plus create_product().
 --
 -- Run this in the Supabase dashboard: SQL Editor -> New query -> paste -> Run.

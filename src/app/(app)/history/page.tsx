@@ -42,6 +42,7 @@ type MovementQueryRow = {
   quantity_change: number;
   remaining_stock: number;
   reason: string | null;
+  note: string | null;
   movement_date: string;
   created_at: string;
   products: Joined<{ name: string; is_active: boolean }>;
@@ -81,7 +82,7 @@ export default async function HistoryPage({
   let movementQuery = supabase
     .from("inventory_movements")
     .select(
-      "id, movement_type, quantity_change, remaining_stock, reason, movement_date, created_at, products(name, is_active), profiles(full_name)",
+      "id, movement_type, quantity_change, remaining_stock, reason, note, movement_date, created_at, products(name, is_active), profiles(full_name)",
     )
     .gte("created_at", start)
     .lt("created_at", end)
@@ -169,6 +170,7 @@ export default async function HistoryPage({
     productInactive: first(m.products)?.is_active === false,
     type: m.movement_type,
     reason: m.reason,
+    note: m.note,
     change: m.quantity_change,
     remaining: m.remaining_stock,
     employee: first(m.profiles)?.full_name ?? "Unknown",

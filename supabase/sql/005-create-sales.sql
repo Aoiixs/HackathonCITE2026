@@ -1,3 +1,7 @@
+-- NOTE: the complete_sale() in this file is SUPERSEDED by the version in
+-- 006-create-low-stock-alerts.sql. The tables and security here are still
+-- current. (005b-repair-sales-tables.sql repeats sections 1 to 4 only.)
+
 -- 005 — sales, sale_items, and complete_sale().
 --
 -- Run this in the Supabase dashboard: SQL Editor -> New query -> paste -> Run.

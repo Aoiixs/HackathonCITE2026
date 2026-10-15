@@ -7,15 +7,22 @@ from the shelf, and the manager finds out late that a product is running
 out.
 
 ## Solution
-One app where staff take an order, record how the customer paid, and
-give a receipt. Stock drops automatically and low stock is flagged to
-staff and the manager straight away. The manager manages products, sees
-history and reports, and decides when to restock.
+One app where employees take an order, record how the customer paid,
+and give a receipt. Stock drops automatically and low stock is flagged to
+the employee and the manager straight away. The manager manages products,
+records stock coming in and going out, sees every employee's sales and
+reports, and decides when to restock.
 
 ## The user
-Two roles, both signed in:
-- **Employee** (Jeremiah): takes orders and records stock.
-- **Manager**: monitors stock, manages products, decides restocking.
+Two roles, both signed in. **The roles are final: employees only sell;
+managers handle everything else.**
+- **Employee** (Jeremiah): takes orders with New sale, sees only their own
+  sales, and sees the Low stock list (view only, no action buttons).
+  Employees cannot reach Manage products or Manage Stocks.
+- **Manager**: does not sell. Sees every employee's sales on the Dashboard
+  and in History & reports. Manages products, records stock in and stock
+  out, recounts stock, flags and resolves low-stock alerts, and sees all
+  reports.
 
 ## Build stages
 This spec is bigger than one three-hour session. It is split in two so
@@ -27,6 +34,10 @@ the demo path ships first.
   extras (sales by employee, top sellers), tablet layout.
 
 Anything marked **[Stage 2]** below is not needed for the demo.
+Status: stock in and stock out (as **Manage Stocks**, manager only) and
+History & reports are now built. Still not built: voiding a sale, GCash
+and Maya labels, product images, the dashboard extras and the tablet
+layout.
 
 ## User stories
 1. As an employee, I want to tap products to build an order and confirm
@@ -35,15 +46,16 @@ Anything marked **[Stage 2]** below is not needed for the demo.
    receipt, so each sale is on record.
 3. As an employee, I want to be told "Only 3 left" when an order is too
    big, so stock never goes negative.
-4. As an employee, I want to record stock coming in and going out
-   (spoiled, damaged, used), so the count matches the shelf. [Stage 2]
+4. As a manager, I want to record stock coming in and going out
+   (spoiled, damaged, used), so the count matches the shelf.
 5. As an employee or manager, I want a low-stock list and warnings, so
-   nobody finds out a product ran out too late.
+   nobody finds out a product ran out too late. (The employee's list is
+   view only; the manager flags and resolves alerts.)
 6. As a manager, I want to add, edit and deactivate products and correct
    a miscount with a note, so the menu and the numbers stay right.
-7. As a manager, I want to see every sale and stock movement, and
-   reports by date, so I can decide when to restock and spot mistakes.
-   [Stage 2]
+7. As a manager, I want to see every employee's sales and every stock
+   movement, and reports by date, so I can decide when to restock and spot
+   mistakes. As an employee, I only see my own sales.
 8. As a manager, I want to void a wrong sale and flag items for
    restocking, so errors and restocking are handled in the app. (Flagging
    is Stage 1; voiding is Stage 2.)
@@ -66,17 +78,19 @@ decides what they see.
 - **Employee:** a large "New sale" button; their own sales today (total
   and count); count of low-stock items; product list (name, category,
   price, stock, In stock / Low stock tag); their 5 most recent sales.
-  Record stock-in and Record stock-out buttons [Stage 2].
-- **Manager:** sidebar menu (Dashboard, New sale, Manage products, Low
-  stock; Stock-in, Stock-out, History & reports [Stage 2]); cards for
-  active products, low-stock items, sales today for all staff;
-  inventory table (name, category, current_stock, minimum_stock, status,
-  Edit); open alerts panel. Stock-outs today, sales by employee today,
-  and top sellers today [Stage 2].
+  No buttons or links to Manage products or Manage Stocks.
+- **Manager:** sidebar menu (Dashboard, Manage products, Manage Stocks,
+  Low stock, History & reports). There is no New sale: managers do not
+  sell. Cards for active products, low-stock items, and sales today for
+  all employees; inventory table (name, category, current_stock,
+  minimum_stock, status, Edit); open alerts panel; the 5 latest sales
+  from every employee. Stock-outs today, sales by employee today, and top
+  sellers today [Stage 2].
 - A low-stock badge with the count of open and flagged alerts shows on
   the Dashboard and the New sale screen.
 
-### 3. New sale (POS), both roles
+### 3. New sale (POS), employee only
+Managers are sent back to the Dashboard.
 - Left: searchable grid of active products with category tabs; each
   shows name, price, and current_stock (amber when below minimum).
 - Right: order summary with quantity +/-, remove item, line totals, total.
@@ -107,7 +121,7 @@ decides what they see.
   history.
 - Success toast after save.
 
-### 5. Record stock-in, both roles [Stage 2]
+### 5. Record stock-in, manager only (on Manage Stocks)
 - Form: product, quantity received, date (defaults to today, can be
   earlier), optional note. Shows the product's current stock and
   minimum beside the form.
@@ -115,7 +129,7 @@ decides what they see.
 - Success toast with the new stock level; resolves the product's open
   alert if stock is back at or above minimum.
 
-### 6. Record stock-out, both roles [Stage 2]
+### 6. Record stock-out, manager only (on Manage Stocks)
 - Form: product, quantity, date, reason (Spoiled, Damaged, Used),
   optional note.
 - Error if quantity is above the stock left ("Only 12 in stock").
@@ -128,10 +142,10 @@ decides what they see.
 - Manager can "Flag for restocking" (status 'flagged') and "Mark
   resolved". Employee sees the list read-only.
 
-### 8. History & reports [Stage 2]
+### 8. History & reports (voiding a sale is [Stage 2])
 - Stock movement table: date, product, type (Sale, Stock-in, Stock-out,
   Adjustment, Initial, Void), quantity change, remaining stock,
-  employee, reason or note. Filters: date range, product, type.
+  employee, note. Filters: date range, product, type.
 - Sales list: receipt number, date, cashier, total, payment method,
   status; opens the receipt.
 - Manager only: void a sale (confirmation; sets status 'voided', puts the
@@ -143,8 +157,12 @@ decides what they see.
 
 ### Flow
 - Sign in -> (valid) Dashboard; (invalid) error on Sign in.
-- Dashboard -> New sale, Low stock; manager also -> Manage products.
-  [Stage 2] also Stock-in, Stock-out, History & reports.
+- Employee: Dashboard -> New sale, Low stock (view only), History (own
+  sales only).
+- Manager: Dashboard -> Manage products, Manage Stocks (stock in, stock
+  out), Low stock (flag, resolve), History & reports (everyone's sales).
+- An employee who opens Manage products or Manage Stocks is sent back to
+  the Dashboard.
 - Forms validate; if wrong, show the error and stay; if right, save,
   update stock, then check minimum stock.
 - Below minimum? Yes -> low-stock modal, then Dashboard. No -> Dashboard
@@ -246,13 +264,21 @@ Table and column names are decisions; use them exactly.
   profile (the app needs that to sign them out). A password that still
   works is not enough.
 - **Employee:** read all products (only active ones appear on New sale);
-  call `complete_sale` (and, in Stage 2, `record_stock_in` and
-  `record_stock_out`); read open and flagged alerts; read their own
-  profile; read only their own sales, sale_items and movements.
-- **Manager:** everything an employee can do, plus insert and update
-  products (never `current_stock`), call `adjust_stock` (and
-  `void_sale` in Stage 2), read all sales and movements, update
-  low_stock_alerts (flag, resolve), read and update profiles.
+  call `complete_sale`; read open and flagged alerts (view only); read
+  their own profile; read only their own sales, sale_items and movements.
+  Cannot call `record_stock_in`, `record_stock_out`, `adjust_stock`,
+  `create_product` or the alert flag and resolve functions: the database
+  refuses them (error 42501).
+- **Manager:** insert and update products (never `current_stock`), call
+  `record_stock_in`, `record_stock_out` and `adjust_stock` (and
+  `void_sale` in Stage 2), flag and resolve alerts, read all sales,
+  sale_items and movements, and read all profiles (reading only; no
+  profile updates are granted).
+- **Managers do not sell. This rule is enforced in the app, not in the
+  database:** the New sale page and `completeSale` refuse managers, but
+  the `complete_sale` function accepts any active staff. This is a known
+  gap, left unchanged by decision. It cannot be reached from the screens,
+  only by calling the database directly.
 - Nobody can update or delete sales, sale_items or inventory_movements,
   except a manager voiding a sale through `void_sale`.
 - Nobody can delete products or profiles.
@@ -267,16 +293,21 @@ done the same way; there is no staff screen.
 
 ## Done for the demo (live URL, Stage 1)
 - [ ] Sign in as employee and as manager; a wrong password shows "Invalid credentials".
-- [ ] Manager adds a product with starting stock; it shows on New sale.
+- [ ] Manager adds a product with starting stock; it shows on the
+      employee's New sale.
 - [ ] Employee confirms an order paid in cash; the receipt shows change
       and a receipt number.
 - [ ] Stock drops on the Dashboard; an order over the stock shows "Only N left".
 - [ ] A sale that takes a product below minimum shows the low-stock
       modal, and the product appears in Low stock.
 - [ ] Manager flags a low-stock product for restocking.
-- [ ] A signed-out visitor sees nothing; an employee cannot reach Manage products.
+- [ ] A signed-out visitor sees nothing; an employee cannot reach Manage
+      products or Manage Stocks (sent back to the Dashboard).
+- [ ] The manager sees every employee's sales on the Dashboard and in
+      History & reports, and has no New sale button.
 
 ## Out of scope
+- Managers taking sales (decided: employees only sell).
 - Staff management screen, receipt printing, offline mode, multi-branch.
 - Real GCash or Maya payment integration. GCash and Maya as recorded
   labels are Stage 2.

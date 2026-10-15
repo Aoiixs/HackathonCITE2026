@@ -11,6 +11,7 @@ Stage 2 of `docs/SPEC.md` (built only if time allows):
 - Product images
 - Manager dashboard extras (sales by employee, top sellers)
 - Tablet layout
+- Phone-width tables: the wide tables (Manage products, History, Low stock, Sales list) scroll sideways on a phone. A card layout for small screens would fix it.
 - GCash and Maya as payment choices (recorded labels only)
 
 - Upload your own profile picture (Supabase Storage). For now pictures are set with SQL (012, 013)

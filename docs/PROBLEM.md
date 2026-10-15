@@ -2,9 +2,11 @@
 
 ## Who
 Jeremiah, the employee who takes customer orders and updates the stock
-at the Nexora food business, Ortiz branch. He is the main user. The
-manager is a second role (decided in `/to-spec`): they monitor stock,
-manage products and decide restocking. See `docs/SPEC.md`.
+at the Nexora food business, Ortiz branch. He is the main user and
+the only one who sells. The manager is a second role: they do not sell.
+They see every employee's sales, manage products, record stock in and
+out, recount stock, handle low-stock alerts and decide restocking. The
+roles are final. See `docs/SPEC.md`.
 
 ## The struggle
 Jeremiah writes each customer order by hand in a notebook while
@@ -34,17 +36,19 @@ Cost: time, errors, and late awareness of low stock (figures to confirm
 above).
 
 ## The MVP
-Staff tap the products in a customer's order, record the payment and
-give a receipt, the stock drops automatically, and any product below its
-minimum level appears in a "running low" list. The manager manages
-products and decides restocking.
+The employee taps the products in a customer's order, records the
+payment and gives a receipt, the stock drops automatically, and any
+product below its minimum level appears in a "running low" list (view
+only for the employee). The manager sees every employee's sales, manages
+products and stock, handles the alerts and decides restocking.
 
 The counter device is a desktop monitor, so we design for a desktop
 screen first. Tablet use is unconfirmed.
 
 Scope grew after the interview: payments and receipts, manager login and
 low-stock alerts are now in the MVP (Stage 1 in `docs/SPEC.md`). Stock
-history, reports and the rest are Stage 2.
+in and out and History & reports have since been built too; voiding a
+sale and the rest stay Stage 2.
 
 ## How we'll know it worked
 Demo (three minutes): add a product, take an order, watch the stock
@@ -56,8 +60,9 @@ view: a Google Sheet with formulas is too complicated to set up and
 maintain.
 
 ## Out of scope
-- Stage 2 items from `docs/SPEC.md` (stock-in/out forms, history and
-  reports, voiding sales, product images, tablet layout)
+- Managers taking sales (employees only sell)
+- Stage 2 items from `docs/SPEC.md` still not built (voiding sales,
+  product images, tablet layout)
 - Staff management screen, receipt printing, offline mode, multi-branch
 - Real GCash or Maya payment integration (labels only)
 
@@ -71,5 +76,5 @@ maintain.
 - **Void**: cancelling a wrong sale so it no longer counts. Stage 2.
 - **Stock-in**: stock added, for example a delivery arrives.
 - **Stock-out**: stock removed without a sale, for example spoiled or damaged.
-- **Employee**: the person at the counter who takes orders (Jeremiah).
-- **Manager**: the person who manages products and decides restocking.
+- **Employee**: the person at the counter who takes orders (Jeremiah). The only role that sells.
+- **Manager**: the person who manages products and stock, sees everyone's sales and decides restocking. Does not sell.

@@ -41,3 +41,7 @@ next-env.d.ts
 
 # ...but DO commit the template, it has no real values
 !.env.example
+
+# A reset script to run by hand in the Supabase dashboard. It deletes all
+# business data, so it is never committed.
+supabase/sql/014-clear-business-data.sql
