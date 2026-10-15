@@ -7,6 +7,8 @@ const menu = [
   { label: "Dashboard", href: "/" },
   { label: "New sale", href: "/sales/new" },
   { label: "Manage products", href: "/products" },
+  { label: "Stock in", href: "/stock-in" },
+  { label: "Stock out", href: "/stock-out" },
   { label: "Low stock", href: "/low-stock" },
 ];
 

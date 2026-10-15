@@ -15,6 +15,11 @@ export function startOfTodayManila(): string {
   return new Date(startUtc).toISOString();
 }
 
+/** Today's date in Manila as "2026-10-15", the format a date input uses. */
+export function todayManila(): string {
+  return new Date(Date.now() + MANILA_OFFSET_MS).toISOString().slice(0, 10);
+}
+
 /** e.g. "Oct 15, 2026, 1:45 PM" in Manila time. */
 export function formatManila(iso: string): string {
   return new Intl.DateTimeFormat("en-PH", {

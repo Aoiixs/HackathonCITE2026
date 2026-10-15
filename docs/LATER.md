@@ -6,7 +6,6 @@ Parking something here is a decision, not a loss. It is how the MVP
 stays small enough to actually ship by Session 3.
 
 Stage 2 of `docs/SPEC.md` (built only if time allows):
-- Record stock-in and stock-out forms
 - History & reports
 - Voiding a sale
 - Product images
