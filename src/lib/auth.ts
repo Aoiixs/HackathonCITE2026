@@ -43,3 +43,14 @@ export const getStaff = cache(async (): Promise<Staff> => {
     role: profile.role as Staff["role"],
   };
 });
+
+/**
+ * Like getStaff(), but only managers get through; an employee is sent back
+ * to the Dashboard. Use it at the top of every manager-only page AND every
+ * manager-only server action: hiding a menu item is not security.
+ */
+export async function requireManager(): Promise<Staff> {
+  const staff = await getStaff();
+  if (staff.role !== "manager") redirect("/");
+  return staff;
+}

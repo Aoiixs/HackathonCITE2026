@@ -7,7 +7,7 @@ import { LogoutButton } from "./logout-button";
 const menu = [
   { label: "Dashboard", href: "/" },
   { label: "New sale", href: null },
-  { label: "Manage products", href: null },
+  { label: "Manage products", href: "/products" },
   { label: "Low stock", href: null },
 ];
 
