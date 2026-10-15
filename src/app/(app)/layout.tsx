@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getStaff } from "@/lib/auth";
-import { Logo } from "@/components/logo";
+import { Brand } from "@/components/brand";
 import { Avatar } from "@/components/avatar";
 import { LogoutButton } from "./logout-button";
 import { SidebarNav } from "./sidebar-nav";
@@ -19,12 +19,7 @@ export default async function AppLayout({
       <div className="flex min-h-screen flex-1 flex-col md:flex-row">
         <aside className="flex flex-col justify-between gap-6 bg-sidebar p-4 md:sticky md:top-0 md:h-screen md:w-60 md:shrink-0 md:overflow-y-auto">
           <div className="flex flex-col gap-6">
-            <div>
-              <Logo variant="dark" height={32} />
-              <p className="mt-1 text-xs text-sidebar-muted">
-                Nexora · Ortiz Branch
-              </p>
-            </div>
+            <Brand subtitle="Nexora · Ortiz Branch" />
             <SidebarNav />
           </div>
           <div className="flex flex-col gap-3">
@@ -46,7 +41,11 @@ export default async function AppLayout({
             <LogoutButton onGreen />
           </div>
         </aside>
-        <main className="min-w-0 flex-1 p-4 md:p-8">{children}</main>
+        {/* md:pt-9: the page label (DASHBOARD...) sits on the same line as
+            "Nexora · Ortiz Branch" in the sidebar. */}
+        <main className="min-w-0 flex-1 p-4 md:px-8 md:pb-8 md:pt-9">
+          {children}
+        </main>
       </div>
     );
   }
@@ -54,7 +53,7 @@ export default async function AppLayout({
   return (
     <div className="flex min-h-screen flex-1 flex-col">
       <header className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 bg-sidebar px-4 py-3 md:px-6">
-        <Logo variant="dark" height={32} />
+        <Brand />
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <Link
             href="/profile"

@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AdjustStockButton } from "./adjust-stock-button";
+import { ActivePill } from "@/components/status-pill";
 import { DeactivateButton } from "./deactivate-button";
 import { Toast } from "@/components/toast";
 import { PageLabel } from "@/components/page-label";
@@ -132,8 +133,19 @@ export default async function ProductsPage({
 
       <Card>
         <CardContent className="overflow-x-auto p-0">
-          <table className="w-full text-left text-sm">
-            <thead className="border-b border-border text-muted-foreground">
+          {/* table-fixed + <colgroup>: every column has a set width, so the
+              headers and the cells under them line up exactly. */}
+          <table className="w-full min-w-[1100px] table-fixed text-left text-sm">
+            <colgroup>
+              <col className="w-[24%]" />
+              <col className="w-[16%]" />
+              <col className="w-[11%]" />
+              <col className="w-[9%]" />
+              <col className="w-[10%]" />
+              <col className="w-[10%]" />
+              <col className="w-[20%]" />
+            </colgroup>
+            <thead className="border-b border-divider text-muted-foreground">
               <tr>
                 <th className="px-4 py-3 font-medium">Name</th>
                 <th className="px-4 py-3 font-medium">Category</th>
@@ -141,21 +153,24 @@ export default async function ProductsPage({
                 <th className="px-4 py-3 text-right font-medium">Stock</th>
                 <th className="px-4 py-3 text-right font-medium">Minimum</th>
                 <th className="px-4 py-3 font-medium">Status</th>
-                <th className="px-4 py-3 font-medium">
-                  <span className="sr-only">Actions</span>
-                </th>
+                <th className="px-4 py-3 text-right font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
               {rows.map((p) => (
-                <tr key={p.id} className="border-b border-border last:border-0">
+                <tr key={p.id} className="border-b border-divider last:border-0">
                   <td className="px-4 py-3 font-medium">{p.name}</td>
                   <td className="px-4 py-3">{p.category}</td>
                   <td className="px-4 py-3 text-right">{peso.format(Number(p.price))}</td>
                   <td className="px-4 py-3 text-right">{p.current_stock}</td>
                   <td className="px-4 py-3 text-right">{p.minimum_stock}</td>
-                  <td className="px-4 py-3">{p.is_active ? "Active" : "Inactive"}</td>
-                  <td className="flex justify-end gap-1 px-4 py-2">
+                  <td className="px-4 py-3">
+                    <ActivePill active={p.is_active} />
+                  </td>
+                  <td className="px-4 py-2">
+                    {/* The buttons sit in a div: making the <td> itself
+                        flex would pull it out of the table's columns. */}
+                    <div className="flex flex-wrap justify-end gap-1">
                     <Link
                       href={`/products/${p.id}/edit`}
                       className={buttonVariants({ variant: "outline", size: "sm" })}
@@ -172,6 +187,7 @@ export default async function ProductsPage({
                     {p.is_active && (
                       <DeactivateButton productId={p.id} productName={p.name} />
                     )}
+                    </div>
                   </td>
                 </tr>
               ))}

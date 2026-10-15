@@ -19,6 +19,7 @@ export function DeactivateButton({
       <Button
         variant="ghost"
         size="sm"
+        className="text-[#a33a26] hover:bg-[#fbe3de] hover:text-[#a33a26]"
         onClick={() => dialogRef.current?.showModal()}
       >
         Deactivate

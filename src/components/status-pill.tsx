@@ -15,3 +15,16 @@ export function StockStatusPill({ low }: { low: boolean }) {
     </span>
   );
 }
+
+export function ActivePill({ active }: { active: boolean }) {
+  return (
+    <span
+      className={cn(
+        base,
+        active ? "bg-[#dcefe6] text-[#1f6b4a]" : "bg-[#eceeea] text-[#6b756f]",
+      )}
+    >
+      {active ? "Active" : "Inactive"}
+    </span>
+  );
+}

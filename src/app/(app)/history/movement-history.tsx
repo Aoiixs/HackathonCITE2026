@@ -149,7 +149,16 @@ export function MovementHistory({
 
       <Card>
         <CardContent className="overflow-x-auto p-0">
-          <table className="w-full text-left text-sm">
+          {/* Fixed column widths: headers and cells line up exactly. */}
+          <table className="w-full min-w-[760px] table-fixed text-left text-sm">
+            <colgroup>
+              <col className="w-[17%]" />
+              <col className="w-[23%]" />
+              <col className="w-[19%]" />
+              <col className="w-[12%]" />
+              <col className="w-[12%]" />
+              <col className="w-[17%]" />
+            </colgroup>
             <thead className="border-b border-divider text-muted-foreground">
               <tr>
                 <th className="px-4 py-3 font-medium">Date</th>

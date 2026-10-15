@@ -31,8 +31,18 @@ export function SalesList({
       <h2 className="text-xl font-semibold">{mine}Sales</h2>
       <Card>
         <CardContent className="overflow-x-auto p-0">
-          <table className="w-full text-left text-sm">
-            <thead className="border-b border-border text-muted-foreground">
+          {/* Fixed column widths: headers and cells line up exactly. */}
+          <table className="w-full min-w-[880px] table-fixed text-left text-sm">
+            <colgroup>
+              <col className="w-[16%]" />
+              <col className="w-[22%]" />
+              <col className="w-[16%]" />
+              <col className="w-[12%]" />
+              <col className="w-[10%]" />
+              <col className="w-[12%]" />
+              <col className="w-[12%]" />
+            </colgroup>
+            <thead className="border-b border-divider text-muted-foreground">
               <tr>
                 <th className="px-4 py-3 font-medium">Receipt</th>
                 <th className="px-4 py-3 font-medium">Date and time</th>
@@ -40,14 +50,12 @@ export function SalesList({
                 <th className="px-4 py-3 text-right font-medium">Total</th>
                 <th className="px-4 py-3 font-medium">Payment</th>
                 <th className="px-4 py-3 font-medium">Status</th>
-                <th className="px-4 py-3 font-medium">
-                  <span className="sr-only">Open</span>
-                </th>
+                <th className="px-4 py-3 text-right font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
               {sales.map((s) => (
-                <tr key={s.id} className="border-b border-border last:border-0">
+                <tr key={s.id} className="border-b border-divider last:border-0">
                   <td className="px-4 py-3 font-mono">{s.receiptNumber}</td>
                   <td className="px-4 py-3">{formatManila(s.createdAt)}</td>
                   <td className="px-4 py-3">{s.cashier}</td>

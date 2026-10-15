@@ -176,7 +176,35 @@ export default async function DashboardPage() {
             <IconTitle icon={Package}>Products</IconTitle>
           </CardHeader>
           <CardContent className="overflow-x-auto p-0">
-            <table className="w-full text-left text-sm">
+            {/* table-fixed + <colgroup>: set column widths, so headers and
+                cells line up exactly. */}
+            <table
+              className={cn(
+                "w-full table-fixed text-left text-sm",
+                isManager ? "min-w-[760px]" : "min-w-[560px]",
+              )}
+            >
+              <colgroup>
+                {isManager ? (
+                  <>
+                    <col className="w-[22%]" />
+                    <col className="w-[16%]" />
+                    <col className="w-[12%]" />
+                    <col className="w-[10%]" />
+                    <col className="w-[12%]" />
+                    <col className="w-[14%]" />
+                    <col className="w-[14%]" />
+                  </>
+                ) : (
+                  <>
+                    <col className="w-[30%]" />
+                    <col className="w-[22%]" />
+                    <col className="w-[16%]" />
+                    <col className="w-[14%]" />
+                    <col className="w-[18%]" />
+                  </>
+                )}
+              </colgroup>
               <thead className="border-y border-divider text-muted-foreground">
                 <tr>
                   <th className="px-4 py-3 font-medium">Name</th>
@@ -188,9 +216,7 @@ export default async function DashboardPage() {
                   )}
                   <th className="px-4 py-3 font-medium">Status</th>
                   {isManager && (
-                    <th className="px-4 py-3 font-medium">
-                      <span className="sr-only">Actions</span>
-                    </th>
+                    <th className="px-4 py-3 text-right font-medium">Actions</th>
                   )}
                 </tr>
               </thead>

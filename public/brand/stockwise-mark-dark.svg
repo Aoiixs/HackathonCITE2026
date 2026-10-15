@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="StockWise">
+  <rect width="64" height="64" rx="15" fill="#2E8A60"/>
+  <rect x="13" y="34" width="17" height="17" rx="3.5" fill="#FFFFFF"/>
+  <rect x="34" y="34" width="17" height="17" rx="3.5" fill="#FFFFFF"/>
+  <rect x="23.5" y="13" width="17" height="17" rx="3.5" fill="#A8E0C3"/>
+  <path d="M28 21.5l3 3 5.5-6" fill="none" stroke="#1F3B2F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
