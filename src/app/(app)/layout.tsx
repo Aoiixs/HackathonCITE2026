@@ -8,7 +8,7 @@ const menu = [
   { label: "Dashboard", href: "/" },
   { label: "New sale", href: "/sales/new" },
   { label: "Manage products", href: "/products" },
-  { label: "Low stock", href: null },
+  { label: "Low stock", href: "/low-stock" },
 ];
 
 export default async function AppLayout({

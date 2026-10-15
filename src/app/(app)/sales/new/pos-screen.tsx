@@ -35,6 +35,9 @@ export function PosScreen({ products }: { products: PosProduct[] }) {
   const [serverErrors, setServerErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [receipt, setReceipt] = useState<Receipt | null>(null);
+  // The same window shows the receipt first, then (only if something is
+  // running low) the amber low-stock warning.
+  const [phase, setPhase] = useState<"receipt" | "low">("receipt");
   const [pending, startTransition] = useTransition();
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -88,6 +91,7 @@ export function PosScreen({ products }: { products: PosProduct[] }) {
       );
       if (result.ok) {
         setReceipt(result.receipt);
+        setPhase("receipt");
         dialogRef.current?.showModal();
       } else {
         setServerErrors(result.lineErrors);
@@ -104,6 +108,7 @@ export function PosScreen({ products }: { products: PosProduct[] }) {
     setServerErrors({});
     setFormError(null);
     setReceipt(null);
+    setPhase("receipt");
   }
 
   return (
@@ -289,7 +294,39 @@ export function PosScreen({ products }: { products: PosProduct[] }) {
         onClose={startFresh}
         className="m-auto w-full max-w-md rounded-[var(--radius)] border border-border bg-card p-6 text-card-foreground backdrop:bg-black/40"
       >
-        {receipt && (
+        {receipt && phase === "low" && (
+          <div className="flex flex-col gap-4">
+            <div className="rounded-[var(--radius)] border border-amber-500 bg-amber-50 p-4 text-amber-950">
+              <h2 className="text-xl font-semibold">Running low</h2>
+              <p className="mt-1 text-sm">
+                This sale took these products below their minimum. Tell the
+                manager.
+              </p>
+              <ul className="mt-3 flex flex-col gap-1 text-sm font-medium">
+                {receipt.lowStock.map((l, index) => (
+                  <li key={index} className="flex justify-between gap-3">
+                    <span>{l.productName}</span>
+                    <span>
+                      {l.currentStock} left (minimum {l.minimumStock})
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex flex-col gap-2 sm:flex-row sm:justify-center">
+              <Button size="lg" onClick={() => dialogRef.current?.close()}>
+                New sale
+              </Button>
+              <Link
+                href="/"
+                className={buttonVariants({ variant: "outline", size: "lg" })}
+              >
+                Back to dashboard
+              </Link>
+            </div>
+          </div>
+        )}
+        {receipt && phase === "receipt" && (
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-1 text-center">
               <h2 className="text-xl font-semibold">Receipt</h2>
@@ -333,17 +370,25 @@ export function PosScreen({ products }: { products: PosProduct[] }) {
               Stock updated automatically
             </p>
 
-            <div className="flex flex-col gap-2 sm:flex-row sm:justify-center">
-              <Button size="lg" onClick={() => dialogRef.current?.close()}>
-                New sale
-              </Button>
-              <Link
-                href="/"
-                className={buttonVariants({ variant: "outline", size: "lg" })}
-              >
-                Back to dashboard
-              </Link>
-            </div>
+            {receipt.lowStock.length > 0 ? (
+              <div className="flex justify-center">
+                <Button size="lg" onClick={() => setPhase("low")}>
+                  Continue
+                </Button>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2 sm:flex-row sm:justify-center">
+                <Button size="lg" onClick={() => dialogRef.current?.close()}>
+                  New sale
+                </Button>
+                <Link
+                  href="/"
+                  className={buttonVariants({ variant: "outline", size: "lg" })}
+                >
+                  Back to dashboard
+                </Link>
+              </div>
+            )}
           </div>
         )}
       </dialog>

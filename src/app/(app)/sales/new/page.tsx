@@ -1,5 +1,6 @@
 import { getStaff } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
+import { LowStockBadge } from "@/components/low-stock-badge";
 import { PosScreen, type PosProduct } from "./pos-screen";
 
 export default async function NewSalePage() {
@@ -20,7 +21,10 @@ export default async function NewSalePage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-3xl font-semibold tracking-tight">New sale</h1>
+      <header className="flex flex-wrap items-center justify-between gap-4">
+        <h1 className="text-3xl font-semibold tracking-tight">New sale</h1>
+        <LowStockBadge />
+      </header>
       <PosScreen products={products} />
     </div>
   );

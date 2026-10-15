@@ -19,6 +19,8 @@ export type Receipt = {
   totalAmount: number;
   amountReceived: number;
   changeAmount: number;
+  // Products on this order that ended up below their minimum.
+  lowStock: { productName: string; currentStock: number; minimumStock: number }[];
 };
 
 export type SaleResult =
@@ -82,6 +84,7 @@ export async function completeSale(
   // Stock changed, so the Dashboard and this screen must be rebuilt fresh.
   revalidatePath("/");
   revalidatePath("/sales/new");
+  revalidatePath("/low-stock");
 
   return {
     ok: true,
@@ -105,6 +108,17 @@ export async function completeSale(
       totalAmount: Number(data.total_amount),
       amountReceived: Number(data.amount_received),
       changeAmount: Number(data.change_amount),
+      lowStock: (data.low_stock ?? []).map(
+        (l: {
+          product_name: string;
+          current_stock: number;
+          minimum_stock: number;
+        }) => ({
+          productName: l.product_name,
+          currentStock: Number(l.current_stock),
+          minimumStock: Number(l.minimum_stock),
+        }),
+      ),
     },
   };
 }

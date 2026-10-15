@@ -3,6 +3,8 @@ import { getStaff } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { formatPeso } from "@/lib/format";
 import { formatManila, startOfTodayManila } from "@/lib/time";
+import { getLowStockAlerts } from "@/lib/low-stock";
+import { LowStockBadge } from "@/components/low-stock-badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -26,7 +28,7 @@ export default async function DashboardPage() {
   // return their own sales, a manager's return everyone's. The same code
   // serves both, and the database decides what each person may see.
   const supabase = await createClient();
-  const [productsResult, todayResult, recentResult] = await Promise.all([
+  const [productsResult, todayResult, recentResult, lowStockAlerts] = await Promise.all([
     supabase
       .from("products")
       .select("id, name, category, price, current_stock, minimum_stock")
@@ -43,6 +45,7 @@ export default async function DashboardPage() {
       .eq("status", "completed")
       .order("created_at", { ascending: false })
       .limit(5),
+    getLowStockAlerts(),
   ]);
 
   const products = (productsResult.data ?? []) as Product[];
@@ -63,12 +66,15 @@ export default async function DashboardPage() {
             {isManager ? "the manager" : "an employee"}.
           </p>
         </div>
-        <Link href="/sales/new" className={buttonVariants({ size: "lg" })}>
-          New sale
-        </Link>
+        <div className="flex flex-wrap items-center gap-3">
+          <LowStockBadge />
+          <Link href="/sales/new" className={buttonVariants({ size: "lg" })}>
+            New sale
+          </Link>
+        </div>
       </header>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <Card>
           <CardHeader>
             <CardTitle className="text-base text-muted-foreground">
@@ -89,6 +95,28 @@ export default async function DashboardPage() {
             {todaySales.length}
           </CardContent>
         </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base text-muted-foreground">
+              Low-stock items
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-3xl font-semibold">
+            {lowStockAlerts.length}
+          </CardContent>
+        </Card>
+        {isManager && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base text-muted-foreground">
+                Active products
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="text-3xl font-semibold">
+              {products.length}
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
