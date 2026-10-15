@@ -147,8 +147,9 @@ and the count matches, it worked.
 
 ### What's next (8:40–9:30)
 What comes next, from our Later list. Voiding a wrong sale. Product
-pictures. More for the manager's dashboard, like sales by employee and top
-sellers. A tablet layout, and cards instead of wide tables on a phone.
+pictures. More on the manager's Dashboard itself, like sales by employee and
+top sellers. The most sold products already appear in History and reports.
+A tablet layout, and cards instead of wide tables on a phone.
 GCash and Maya as payment labels. And uploading your own profile picture.
 Things we chose not to build: a staff management screen, receipt printing,
 offline mode, more than one branch, and real GCash or Maya payments. We
@@ -253,13 +254,19 @@ Strengthen it before you present:
 - **Demo data.** Run `supabase/seed/demo-data.sql` on the day you present
   (it builds the 15 days ending today). To start clean instead, run `014` by
   hand. Never say the demo sales are real.
-- **Check the starting point of the demo.** The product "Leche Flan" must
-  not already exist (use another name if it does). Before step 3, look at
-  the Dashboard and pick a product with plenty of stock, so that order does
-  not trigger the low-stock pop-up too early.
-- **After the rehearsal, tidy up.** Your practice sales stay in the
-  database. Run `remove-demo-data.sql` and `demo-data.sql` again, or
-  deactivate the practice product, so the numbers are clean for the panel.
+- **Check the starting point of the demo.** There must be no active product
+  called "Leche Flan" (use another name if there is one). Before step 3,
+  look at the Dashboard and pick a product with plenty of stock, so that
+  order does not trigger the low-stock pop-up too early.
+- **After every rehearsal, deactivate Leche Flan.** In Manage products,
+  click Deactivate next to Leche Flan and confirm. A deactivated product
+  frees its name, so you can add Leche Flan again next time. Its rehearsal
+  sale stays in History, because history is never deleted.
+- **To wipe the rehearsal sales too,** run `014` by hand (it deletes all
+  products, sales and history, but keeps the staff accounts), then run
+  `demo-data.sql` again. `remove-demo-data.sql` is not enough: it only
+  removes the sample data, not your rehearsal sales. Do this on the day you
+  present, so the numbers are clean for the panel.
 - **Rehearse out loud with a timer, twice.** The demo is the part most
   likely to run over: if you reach step 7 (5:50) more than 30 seconds late,
   skip it and say it is on the checklist. Steps 1 to 6 and 8 are the ones
@@ -268,7 +275,7 @@ Strengthen it before you present:
   work, here is what it should show" is better than a bluff.
 
 ## Word count and timing note
-- **Spoken words: about 790** (parts 1, 2, 3, the demo SHOW lines, "Why the
+- **Spoken words: about 800** (parts 1, 2, 3, the demo SHOW lines, "Why the
   data is safe", 5 and "What's next"). DO lines are clicks, not speech, and
   are not counted.
 - At a calm 130 words a minute that is about 6 minutes of talking. The
@@ -276,7 +283,7 @@ Strengthen it before you present:
 - Each part fits its slot in the table at the top, with a little to spare:
   1 is 64 words for 45 seconds, 2 is 73 for 40, 3 is 84 for 45, the demo is
   319 for 5 minutes, "Why the data is safe" is 117 for 55 seconds (the
-  tightest), 5 is 50 for 35, and "What's next" is 84 for 50.
+  tightest), 5 is 50 for 35, and "What's next" is 95 for 50.
 - The 450-word limit was for a 3-minute pitch. For 10 minutes the script
   can be longer, but if you rehearse and run over, cut the
   "Why the data is safe" part first and shorten the demo narration, not
