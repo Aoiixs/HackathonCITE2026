@@ -4,12 +4,12 @@
 
 **Blocked by:** 09
 
-**Status:** todo
+**Status:** done
 
-- [ ] The manager's menu shows "Manage Stocks" with an icon, and no separate "Stock in" or "Stock out" items
-- [ ] The Manage Stocks screen has two options at the top, Stock in and Stock out, and opens on Stock in
-- [ ] Choosing Stock in shows the stock-in form, and choosing Stock out shows the stock-out form, each exactly as before (fields, errors, success message, low-stock warning, Cancel and Save buttons)
-- [ ] Switching between the two options starts a fresh form, so nothing typed in one carries into the other
-- [ ] The old addresses for the two pages still work and open the matching option
-- [ ] An employee cannot open the screen, and the database functions are unchanged
-- [ ] Works on the live URL
+- [x] The manager's menu shows "Manage Stocks" with an icon, and no separate "Stock in" or "Stock out" items
+- [x] The Manage Stocks screen has two options at the top, Stock in and Stock out, and opens on Stock in
+- [x] Choosing Stock in shows the stock-in form, and choosing Stock out shows the stock-out form, each exactly as before (fields, errors, success message, low-stock warning, Cancel and Save buttons)
+- [x] Switching between the two options starts a fresh form, so nothing typed in one carries into the other
+- [x] The old addresses for the two pages still work and open the matching option
+- [x] An employee cannot open the screen, and the database functions are unchanged
+- [x] Works on the live URL
