@@ -5,7 +5,6 @@ import {
   firstOfMonthManila,
   formatDateOnly,
   isValidDate,
-  manilaDateOf,
   manilaDayStart,
   manilaNextDayStart,
   todayManila,
@@ -88,22 +87,24 @@ export default async function HistoryPage({
   if (product) movementQuery = movementQuery.eq("product_id", product);
   if (type) movementQuery = movementQuery.eq("movement_type", type);
 
-  const [salesResult, movementsResult, soldResult, productsResult] = await Promise.all([
+  const [salesResult, movementsResult, reportResult, productsResult] = await Promise.all([
+    // Only the newest rows are fetched for the list; "count" is the exact
+    // number of sales in the dates, however many there are.
     supabase
       .from("sales")
-      .select("id, receipt_number, created_at, total_amount, payment_method, status, profiles(full_name)")
+      .select(
+        "id, receipt_number, created_at, total_amount, payment_method, status, profiles(full_name)",
+        { count: "exact" },
+      )
       .gte("created_at", start)
       .lt("created_at", end)
       .order("created_at", { ascending: false })
-      .limit(5000),
+      .limit(SALES_SHOWN),
     movementQuery,
-    supabase
-      .from("sale_items")
-      .select("product_name, quantity, sales!inner(created_at, status)")
-      .gte("sales.created_at", start)
-      .lt("sales.created_at", end)
-      .eq("sales.status", "completed")
-      .limit(5000),
+    // The totals are added up inside the database (see 010-sales-report.sql),
+    // not here: Supabase returns at most 1,000 rows per request, so adding
+    // up downloaded rows would quietly come out short in a busy month.
+    supabase.rpc("sales_report", { p_from: start, p_to: end }),
     // All products, deactivated ones too: history must still name them.
     supabase
       .from("products")
@@ -120,28 +121,30 @@ export default async function HistoryPage({
     is_active: boolean;
   }[];
 
-  // Card 1: totals and one bar per day. Voided sales never count.
-  const completed = sales.filter((s) => s.status === "completed");
-  const totalCents = completed.reduce(
-    (sum, s) => sum + Math.round(Number(s.total_amount) * 100),
-    0,
-  );
-  const centsByDay = new Map<string, number>();
-  for (const s of completed) {
-    const day = manilaDateOf(s.created_at);
-    centsByDay.set(day, (centsByDay.get(day) ?? 0) + Math.round(Number(s.total_amount) * 100));
+  // Cards 1 and 2 come from the database's own totals. Voided sales never
+  // count. If the totals cannot be loaded we say so, instead of showing
+  // zeros that look like "no sales".
+  const report = reportResult.error
+    ? null
+    : (reportResult.data as {
+        total: number;
+        orders: number;
+        daily: { date: string; total: number }[];
+        top: { name: string; quantity: number }[];
+      });
+  if (reportResult.error) {
+    console.error("Could not load the sales report:", reportResult.error.message);
   }
-  const days = eachDay(from, to).slice(-CHART_DAYS);
-  const daily = days.map((date) => ({ date, cents: centsByDay.get(date) ?? 0 }));
 
-  // Card 2: the four best sellers.
-  const soldByProduct = new Map<string, number>();
-  for (const item of (soldResult.data ?? []) as { product_name: string; quantity: number }[]) {
-    soldByProduct.set(item.product_name, (soldByProduct.get(item.product_name) ?? 0) + item.quantity);
-  }
-  const topSellers = [...soldByProduct.entries()]
-    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-    .slice(0, 4);
+  const totalCents = Math.round(Number(report?.total ?? 0) * 100);
+  const centsByDay = new Map<string, number>(
+    (report?.daily ?? []).map((d) => [d.date, Math.round(Number(d.total) * 100)]),
+  );
+  // One bar for every day in the range, including days with no sales.
+  const daily = eachDay(from, to)
+    .slice(-CHART_DAYS)
+    .map((date) => ({ date, cents: centsByDay.get(date) ?? 0 }));
+  const topSellers: [string, number][] = (report?.top ?? []).map((t) => [t.name, t.quantity]);
 
   // Card 3: worked out live from today's stock, the same test the Dashboard's
   // product table uses for its "Low stock" tag (active and below minimum).
@@ -168,7 +171,7 @@ export default async function HistoryPage({
     employee: first(m.profiles)?.full_name ?? "Unknown",
   }));
 
-  const saleRows: SaleRow[] = sales.slice(0, SALES_SHOWN).map((s) => ({
+  const saleRows: SaleRow[] = sales.map((s) => ({
     id: s.id,
     receiptNumber: s.receipt_number,
     createdAt: s.created_at,
@@ -188,15 +191,22 @@ export default async function HistoryPage({
         </p>
       </header>
 
-      <SummaryCards
-        mine={mine}
-        totalCents={totalCents}
-        orders={completed.length}
-        daily={daily}
-        today={today}
-        topSellers={topSellers}
-        lowProducts={lowProducts}
-      />
+      {report ? (
+        <SummaryCards
+          mine={mine}
+          totalCents={totalCents}
+          orders={Number(report.orders)}
+          daily={daily}
+          today={today}
+          topSellers={topSellers}
+          lowProducts={lowProducts}
+        />
+      ) : (
+        <p role="alert" className="rounded-[var(--radius)] border border-destructive p-4 text-sm font-medium text-destructive">
+          The sales totals could not be loaded, so they are not shown. Please
+          refresh. If it keeps happening, tell the team.
+        </p>
+      )}
 
       <MovementHistory
         filters={{ from, to, product, type }}
@@ -208,7 +218,12 @@ export default async function HistoryPage({
         pageSize={PAGE_SIZE}
       />
 
-      <SalesList mine={mine} sales={saleRows} shown={SALES_SHOWN} total={sales.length} />
+      <SalesList
+        mine={mine}
+        sales={saleRows}
+        shown={SALES_SHOWN}
+        total={salesResult.count ?? saleRows.length}
+      />
     </div>
   );
 }
