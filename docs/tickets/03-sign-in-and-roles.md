@@ -4,14 +4,14 @@
 
 **Blocked by:** 02
 
-**Status:** todo
+**Status:** done
 
-- [ ] A numbered SQL file in `supabase/sql/` adds the first manager and an employee `profiles` row for accounts the team creates in the Supabase dashboard
-- [ ] Sign in with the right email and password goes to the Dashboard
-- [ ] A wrong password shows "Invalid credentials" and stays on the form
-- [ ] A staff member with `is_active = false` who enters the right password is signed straight back out with a clear message and never reaches the Dashboard; this is checked on every signed-in page, so deactivating someone who is already signed in also takes effect
-- [ ] A database helper tells policies whether the signed-in user is active staff and what their role is, so the tables in tickets 04 to 07 can reuse it
-- [ ] The top bar shows full name and role, and Log out asks for confirmation, then returns to Sign in
-- [ ] The manager sees a sidebar menu; the employee does not
-- [ ] Any other page, opened while signed out, goes to Sign in
-- [ ] Works on the live URL, signed in as both a manager and an employee
+- [x] A numbered SQL file in `supabase/sql/` adds the first manager and an employee `profiles` row for accounts the team creates in the Supabase dashboard
+- [x] Sign in with the right email and password goes to the Dashboard
+- [x] A wrong password shows "Invalid credentials" and stays on the form
+- [x] A staff member with `is_active = false` who enters the right password is signed straight back out with a clear message and never reaches the Dashboard; this is checked on every signed-in page, so deactivating someone who is already signed in also takes effect
+- [x] A database helper tells policies whether the signed-in user is active staff and what their role is, so the tables in tickets 04 to 07 can reuse it
+- [x] The top bar shows full name and role, and Log out asks for confirmation, then returns to Sign in
+- [x] The manager sees a sidebar menu; the employee does not
+- [x] Any other page, opened while signed out, goes to Sign in
+- [x] Works on the live URL, signed in as both a manager and an employee
