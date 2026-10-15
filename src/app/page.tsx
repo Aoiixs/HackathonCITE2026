@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { ConnectionStatus } from "@/components/connection-status";
 
 // This is the starter screen. Once Ticket 01 is done and you can see this
 // page on your phone, delete everything here and build your own app.
@@ -48,6 +49,8 @@ export default function Home() {
           something real, not something on your laptop.
         </p>
       </header>
+
+      <ConnectionStatus />
 
       <Card>
         <CardHeader>
