@@ -6,6 +6,8 @@ export type Staff = {
   id: string;
   fullName: string;
   role: "employee" | "manager";
+  email: string;
+  avatarUrl: string | null;
 };
 
 /**
@@ -37,8 +39,18 @@ export const getStaff = cache(async (): Promise<Staff> => {
 
   if (!profile || !profile.is_active) redirect("/auth/inactive");
 
+  // Read on its own so that a missing avatar_url column (012 not run yet)
+  // can never lock anyone out: on any error we just show initials.
+  const { data: avatar } = await supabase
+    .from("profiles")
+    .select("avatar_url")
+    .eq("id", user.id)
+    .maybeSingle();
+
   return {
     id: user.id,
+    email: user.email ?? "",
+    avatarUrl: (avatar?.avatar_url as string | null | undefined) ?? null,
     fullName: profile.full_name,
     role: profile.role as Staff["role"],
   };

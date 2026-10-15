@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Logo } from "@/components/logo";
 import { LoginForm } from "./login-form";
 
 export default async function LoginPage({
@@ -32,9 +33,12 @@ export default async function LoginPage({
 
   return (
     <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-6 px-4 py-12">
+      <div className="flex justify-center">
+        <Logo variant="light" height={48} />
+      </div>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">StockWise</CardTitle>
+          <CardTitle className="text-2xl">Sign in</CardTitle>
           <CardDescription>Sign in with your staff account.</CardDescription>
         </CardHeader>
         <CardContent>

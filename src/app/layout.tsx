@@ -4,6 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "StockWise",
   description: "Orders and stock for Nexora",
+  icons: { icon: "/brand/stockwise-mark.svg" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -13,6 +13,8 @@ Stage 2 of `docs/SPEC.md` (built only if time allows):
 - Tablet layout
 - GCash and Maya as payment choices (recorded labels only)
 
+- Upload your own profile picture (Supabase Storage). For now pictures are set with SQL (012, 013)
+
 Not planned:
 - Staff management screen
 - Receipt printing
