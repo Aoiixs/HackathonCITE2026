@@ -4,9 +4,9 @@
 
 **Blocked by:** None
 
-**Status:** todo
+**Status:** done
 
-- [ ] The live URL (https://hackathon-cite-2026.vercel.app) loads on a team member's phone
-- [ ] The live URL is at the top of `README.md`
-- [ ] A small change pushed to `main` shows up on the live URL after the deploy finishes
-- [ ] Works on the live URL
+- [x] The live URL (https://hackathon-cite-2026.vercel.app) loads on a team member's phone
+- [x] The live URL is at the top of `README.md`
+- [x] A small change pushed to `main` shows up on the live URL after the deploy finishes
+- [x] Works on the live URL
