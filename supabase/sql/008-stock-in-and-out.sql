@@ -1,20 +1,3 @@
--- 008 — record_stock_in() and record_stock_out().
---
--- Run this in the Supabase dashboard: SQL Editor -> New query -> paste -> Run.
--- It needs 002 to 007 to have been run first.
---
--- Same idea as adjust_stock() (007): stock only changes through database
--- functions, each one saves the new number AND its history record in one
--- all-or-nothing step, and each re-checks the low-stock alert.
---
--- Both are for managers only for now.
---
--- Each returns a small JSON answer, so the app can say "Rice meal now has
--- 25" and, for stock out, warn when the product dropped below its minimum:
---   { "product_name": "...", "new_stock": 25, "minimum_stock": 5 }
-
--- 1. record_stock_in(): a delivery arrived -----------------------------
-
 create or replace function public.record_stock_in(
   p_product_id    uuid,
   p_quantity      integer,
@@ -27,7 +10,7 @@ security definer
 set search_path = ''
 as $$
 declare
-  v_today date := (now() at time zone 'Asia/Manila')::date;  -- the shop's calendar day
+  v_today date := (now() at time zone 'Asia/Manila')::date;
   v_name  text;
   v_new   integer;
   v_min   integer;
@@ -52,8 +35,6 @@ begin
     raise exception 'Keep the note under 500 characters' using errcode = '22023';
   end if;
 
-  -- The update takes a lock on the row, so a sale at the same moment waits
-  -- its turn instead of overwriting this change.
   update public.products
     set current_stock = current_stock + p_quantity
     where id = p_product_id and is_active
@@ -77,8 +58,6 @@ begin
   );
 end
 $$;
-
--- 2. record_stock_out(): stock lost to spoilage, damage or own use ------
 
 create or replace function public.record_stock_out(
   p_product_id    uuid,
@@ -123,8 +102,6 @@ begin
     raise exception 'Keep the note under 500 characters' using errcode = '22023';
   end if;
 
-  -- Lock the row first, then compare, so the stock cannot change between
-  -- checking it and lowering it.
   select name, current_stock, minimum_stock
     into v_name, v_current, v_min
     from public.products
@@ -135,7 +112,6 @@ begin
     raise exception 'That product was not found' using errcode = '22023';
   end if;
 
-  -- NX001 is the same "not enough stock" code complete_sale() uses.
   if p_quantity > v_current then
     raise exception 'Only % in stock', v_current
       using errcode = 'NX001', detail = p_product_id::text;
@@ -160,8 +136,6 @@ begin
 end
 $$;
 
--- 3. Who may call them: signed-in users only (the functions check the role).
-
 revoke all on function public.record_stock_in(uuid, integer, date, text)
   from public, anon;
 revoke all on function public.record_stock_out(uuid, integer, text, date, text)
@@ -170,3 +144,5 @@ grant execute on function public.record_stock_in(uuid, integer, date, text)
   to authenticated;
 grant execute on function public.record_stock_out(uuid, integer, text, date, text)
   to authenticated;
+
+notify pgrst, 'reload schema';

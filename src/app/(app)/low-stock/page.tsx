@@ -1,5 +1,6 @@
 import { getStaff } from "@/lib/auth";
 import { getLowStockAlerts } from "@/lib/low-stock";
+import { AlertStatusPill } from "@/components/status-pill";
 import { SubmitButton } from "@/components/submit-button";
 import { Toast } from "@/components/toast";
 import { Card, CardContent } from "@/components/ui/card";
@@ -37,16 +38,16 @@ export default async function LowStockPage({
         <CardContent className="overflow-x-auto p-0">
           {/* Fixed column widths: headers and cells line up exactly. */}
           <table
-            className={`w-full table-fixed text-left text-sm ${isManager ? "min-w-[820px]" : "min-w-[560px]"}`}
+            className={`w-full table-fixed text-left text-sm ${isManager ? "min-w-[900px]" : "min-w-[560px]"}`}
           >
             <colgroup>
               {isManager ? (
                 <>
-                  <col className="w-[28%]" />
-                  <col className="w-[14%]" />
+                  <col className="w-[24%]" />
                   <col className="w-[12%]" />
-                  <col className="w-[20%]" />
-                  <col className="w-[26%]" />
+                  <col className="w-[11%]" />
+                  <col className="w-[21%]" />
+                  <col className="w-[32%]" />
                 </>
               ) : (
                 <>
@@ -64,7 +65,7 @@ export default async function LowStockPage({
                 <th className="px-4 py-3 text-right font-medium">Minimum</th>
                 <th className="px-4 py-3 font-medium">Status</th>
                 {isManager && (
-                  <th className="px-4 py-3 text-center font-medium">Actions</th>
+                  <th className="px-4 py-3 text-right font-medium">Actions</th>
                 )}
               </tr>
             </thead>
@@ -82,11 +83,11 @@ export default async function LowStockPage({
                   </td>
                   <td className="px-4 py-3 text-right">{a.product.minimumStock}</td>
                   <td className="px-4 py-3">
-                    {a.status === "flagged" ? "Flagged for restocking" : "Open"}
+                    <AlertStatusPill status={a.status} />
                   </td>
                   {isManager && (
                     <td className="px-4 py-2">
-                      <div className="flex flex-wrap justify-center gap-2">
+                      <div className="flex flex-nowrap items-center justify-end gap-2 whitespace-nowrap">
                       {a.status === "open" && (
                         <form action={flagAlert}>
                           <input type="hidden" name="alert_id" value={a.id} />
@@ -97,7 +98,7 @@ export default async function LowStockPage({
                       )}
                       <form action={resolveAlert}>
                         <input type="hidden" name="alert_id" value={a.id} />
-                        <SubmitButton variant="ghost" size="sm" pendingLabel="Resolving…">
+                        <SubmitButton variant="outline" size="sm" pendingLabel="Resolving…">
                           Mark resolved
                         </SubmitButton>
                       </form>

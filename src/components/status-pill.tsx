@@ -16,6 +16,21 @@ export function StockStatusPill({ low }: { low: boolean }) {
   );
 }
 
+export function AlertStatusPill({ status }: { status: "open" | "flagged" }) {
+  return (
+    <span
+      className={cn(
+        base,
+        status === "flagged"
+          ? "bg-[#fdf0d5] text-[#8a5a0b]"
+          : "bg-[#fbe3de] text-[#a33a26]",
+      )}
+    >
+      {status === "flagged" ? "Flagged for restocking" : "Open"}
+    </span>
+  );
+}
+
 export function ActivePill({ active }: { active: boolean }) {
   return (
     <span
