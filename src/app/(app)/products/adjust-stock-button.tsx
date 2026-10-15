@@ -55,8 +55,7 @@ export function AdjustStockButton({
           <div className="flex flex-col gap-1">
             <h2 className="text-2xl font-semibold">Adjust stock: {productName}</h2>
             <p className="text-base text-muted-foreground">
-              The system says {currentStock}. Count the shelf and enter what is
-              really there. The change is saved in the history with your note.
+              System count: {currentStock}. Enter what is really on the shelf.
             </p>
           </div>
 
