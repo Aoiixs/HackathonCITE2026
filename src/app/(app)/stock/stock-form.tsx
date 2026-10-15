@@ -12,6 +12,7 @@ import type { StockFormState } from "./actions";
 export type StockProduct = {
   id: string;
   name: string;
+  category: string;
   current_stock: number;
   minimum_stock: number;
 };
@@ -24,16 +25,29 @@ type Props = {
   ) => Promise<StockFormState>;
   products: StockProduct[];
   today: string; // "2026-10-15", the shop's date
+  initialProduct?: string; // a product id to have chosen when the page opens
 };
 
 const selectClass =
   "flex h-10 w-full rounded-[var(--radius)] border border-input bg-card px-3 py-2 text-base md:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
-export function StockForm({ mode, action, products, today }: Props) {
+export function StockForm({
+  mode,
+  action,
+  products,
+  today,
+  initialProduct = "",
+}: Props) {
   const [state, formAction, pending] = useActionState(action, {
     errors: {},
     formError: null,
-    values: { product: "", quantity: "", date: today, reason: "", note: "" },
+    values: {
+      product: products.some((p) => p.id === initialProduct) ? initialProduct : "",
+      quantity: "",
+      date: today,
+      reason: "",
+      note: "",
+    },
     attempt: 0,
     success: null,
   } satisfies StockFormState);
@@ -88,10 +102,39 @@ function Fields({
 }) {
   const [productId, setProductId] = useState(state.values.product);
   const chosen = products.find((p) => p.id === productId);
+  // The Category select is only a filter for the Product list. It has no
+  // name="...", so it is never sent with the form or saved.
+  const [category, setCategory] = useState(chosen?.category ?? "");
+  const categories = [...new Set(products.map((p) => p.category))].sort((a, b) =>
+    a.localeCompare(b),
+  );
+  const visible = category ? products.filter((p) => p.category === category) : products;
   const { errors, values } = state;
+
+  function changeCategory(next: string) {
+    setCategory(next);
+    // A product from another category can't stay chosen.
+    if (next && chosen && chosen.category !== next) setProductId("");
+  }
 
   return (
     <>
+      <Field label="Category" id="category">
+        <select
+          id="category"
+          value={category}
+          onChange={(e) => changeCategory(e.target.value)}
+          className={selectClass}
+        >
+          <option value="">All categories</option>
+          {categories.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
+      </Field>
+
       <Field label="Product" id="product" error={errors.product}>
         <select
           id="product"
@@ -101,9 +144,9 @@ function Fields({
           className={selectClass}
         >
           <option value="">Choose a product</option>
-          {products.map((p) => (
+          {visible.map((p) => (
             <option key={p.id} value={p.id}>
-              {p.name}
+              {p.name} · {p.current_stock} in stock
             </option>
           ))}
         </select>

@@ -2,12 +2,12 @@ import Link from "next/link";
 import { requireManager } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { buttonVariants } from "@/components/ui/button";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AdjustStockButton } from "./adjust-stock-button";
 import { ActivePill } from "@/components/status-pill";
+import { FilterForm } from "./filter-form";
 import { DeactivateButton } from "./deactivate-button";
 import { Toast } from "@/components/toast";
 import { PageLabel } from "@/components/page-label";
@@ -101,8 +101,8 @@ export default async function ProductsPage({
       </header>
 
       {/* A plain form that reloads the page with ?q=&category=&status= in
-          the address. No JavaScript needed, and the filters are shareable. */}
-      <form method="get" className="flex flex-wrap items-end gap-3">
+          the address (it submits itself when a dropdown changes). */}
+      <FilterForm>
         <div className="flex flex-col gap-2">
           <Label htmlFor="q">Search</Label>
           <Input id="q" name="q" defaultValue={q} placeholder="Product name" />
@@ -126,10 +126,7 @@ export default async function ProductsPage({
             <option value="all">All</option>
           </select>
         </div>
-        <Button type="submit" variant="secondary">
-          Apply
-        </Button>
-      </form>
+      </FilterForm>
 
       <Card>
         <CardContent className="overflow-x-auto p-0">

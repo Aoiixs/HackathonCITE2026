@@ -11,18 +11,18 @@ import { PageLabel } from "@/components/page-label";
 export default async function ManageStocksPage({
   searchParams,
 }: {
-  searchParams: Promise<{ mode?: string }>;
+  searchParams: Promise<{ mode?: string; product?: string }>;
 }) {
   await requireManager(); // an employee is sent back to the Dashboard
 
   // "?mode=out" shows Stock out; anything else shows Stock in.
-  const { mode: requested } = await searchParams;
+  const { mode: requested, product: initialProduct } = await searchParams;
   const mode = requested === "out" ? "out" : "in";
 
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("products")
-    .select("id, name, current_stock, minimum_stock")
+    .select("id, name, category, current_stock, minimum_stock")
     .eq("is_active", true)
     .order("name");
   if (error) console.error("Could not load products:", error.message);
@@ -71,6 +71,7 @@ export default async function ManageStocksPage({
         action={mode === "in" ? recordStockIn : recordStockOut}
         products={(data ?? []) as StockProduct[]}
         today={todayManila()}
+        initialProduct={initialProduct}
       />
     </div>
   );
