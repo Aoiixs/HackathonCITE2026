@@ -4,12 +4,12 @@
 
 **Blocked by:** 10
 
-**Status:** todo
+**Status:** done
 
-- [ ] Every item in the manager's menu has an icon: Dashboard, New sale, Manage products, Stock in, Stock out, Low stock, History & reports
-- [ ] Every card on the Dashboard has an icon: Sales today, Orders today, Low-stock items, Active products (manager)
-- [ ] The Dashboard's section titles have icons: Products, Open alerts (manager), Latest sales
-- [ ] The Dashboard's New sale and History buttons, the Low stock badge, and the Log out button have icons
-- [ ] Icons are decoration for people who can see them: they are hidden from screen readers, so every label still reads the same
-- [ ] Nothing moves, wraps or breaks at phone width
-- [ ] Works on the live URL
+- [x] Every item in the manager's menu has an icon: Dashboard, New sale, Manage products, Stock in, Stock out, Low stock, History & reports
+- [x] Every card on the Dashboard has an icon: Sales today, Orders today, Low-stock items, Active products (manager)
+- [x] The Dashboard's section titles have icons: Products, Open alerts (manager), Latest sales
+- [x] The Dashboard's New sale and History buttons, the Low stock badge, and the Log out button have icons
+- [x] Icons are decoration for people who can see them: they are hidden from screen readers, so every label still reads the same
+- [x] Nothing moves, wraps or breaks at phone width
+- [x] Works on the live URL
