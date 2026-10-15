@@ -1,6 +1,6 @@
 import { getStaff } from "@/lib/auth";
 import { getLowStockAlerts } from "@/lib/low-stock";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/submit-button";
 import { Toast } from "@/components/toast";
 import { Card, CardContent } from "@/components/ui/card";
 import { flagAlert, resolveAlert } from "./actions";
@@ -68,16 +68,16 @@ export default async function LowStockPage({
                       {a.status === "open" && (
                         <form action={flagAlert}>
                           <input type="hidden" name="alert_id" value={a.id} />
-                          <Button type="submit" variant="outline" size="sm">
+                          <SubmitButton variant="outline" size="sm" pendingLabel="Flagging…">
                             Flag for restocking
-                          </Button>
+                          </SubmitButton>
                         </form>
                       )}
                       <form action={resolveAlert}>
                         <input type="hidden" name="alert_id" value={a.id} />
-                        <Button type="submit" variant="ghost" size="sm">
+                        <SubmitButton variant="ghost" size="sm" pendingLabel="Resolving…">
                           Mark resolved
-                        </Button>
+                        </SubmitButton>
                       </form>
                     </td>
                   )}

@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/submit-button";
 import { deactivateProduct } from "./actions";
 
 export function DeactivateButton({
@@ -41,9 +42,9 @@ export function DeactivateButton({
             >
               Cancel
             </Button>
-            <Button type="submit" variant="destructive">
+            <SubmitButton variant="destructive" pendingLabel="Deactivating…">
               Deactivate
-            </Button>
+            </SubmitButton>
           </div>
         </form>
       </dialog>

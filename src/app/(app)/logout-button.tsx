@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/submit-button";
 import { signOut } from "@/app/login/actions";
 
 // Asks "Log out?" in a dialog first, so a stray tap can't end a busy shift.
@@ -33,7 +34,7 @@ export function LogoutButton() {
             >
               Cancel
             </Button>
-            <Button type="submit">Log out</Button>
+            <SubmitButton pendingLabel="Logging out…">Log out</SubmitButton>
           </div>
         </form>
       </dialog>
