@@ -18,7 +18,7 @@ export function DeactivateButton({
     <>
       <Button
         variant="outline"
-        size="sm"
+        size="default"
         className="border-[#f2c4ba] text-[#a33a26] hover:bg-[#fbe3de] hover:text-[#a33a26]"
         onClick={() => dialogRef.current?.showModal()}
       >

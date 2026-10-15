@@ -131,15 +131,15 @@ export default async function ProductsPage({
         <CardContent className="overflow-x-auto p-0">
           {/* table-fixed + <colgroup>: every column has a set width, so the
               headers and the cells under them line up exactly. */}
-          <table className="w-full min-w-[1150px] table-fixed text-left text-sm">
+          <table className="w-full min-w-[1250px] table-fixed text-left text-sm">
             <colgroup>
-              <col className="w-[20%]" />
-              <col className="w-[14%]" />
-              <col className="w-[11%]" />
+              <col className="w-[18%]" />
+              <col className="w-[12%]" />
+              <col className="w-[10%]" />
+              <col className="w-[8%]" />
               <col className="w-[9%]" />
               <col className="w-[10%]" />
-              <col className="w-[10%]" />
-              <col className="w-[26%]" />
+              <col className="w-[33%]" />
             </colgroup>
             <thead className="border-b border-divider text-muted-foreground">
               <tr>
@@ -169,7 +169,7 @@ export default async function ProductsPage({
                     <div className="flex flex-nowrap items-center justify-center gap-2 whitespace-nowrap">
                     <Link
                       href={`/products/${p.id}/edit`}
-                      className={buttonVariants({ variant: "outline", size: "sm" })}
+                      className={buttonVariants({ variant: "outline", size: "default" })}
                     >
                       Edit
                     </Link>

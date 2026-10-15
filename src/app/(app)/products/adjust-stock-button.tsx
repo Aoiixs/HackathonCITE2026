@@ -43,7 +43,7 @@ export function AdjustStockButton({
 
   return (
     <>
-      <Button variant="outline" size="sm" onClick={open}>
+      <Button variant="outline" size="default" onClick={open}>
         Adjust stock
       </Button>
       <dialog
