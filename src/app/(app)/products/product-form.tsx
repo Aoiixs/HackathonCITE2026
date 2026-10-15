@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,6 +16,8 @@ type Props = {
   productId?: string;
   initialValues: Record<string, string>;
   categories: string[];
+  onCancel?: () => void; // inside a modal: close it instead of navigating
+  onSaved?: () => void;
 };
 
 export function ProductForm({
@@ -24,6 +26,8 @@ export function ProductForm({
   productId,
   initialValues,
   categories,
+  onCancel,
+  onSaved,
 }: Props) {
   const [state, formAction, pending] = useActionState(action, {
     errors: {},
@@ -31,6 +35,9 @@ export function ProductForm({
     values: initialValues,
     attempt: 0,
   });
+  useEffect(() => {
+    if (state.done) onSaved?.();
+  }, [state, onSaved]);
   const value = (key: string) => state.values[key] ?? "";
 
   // key={state.attempt} rebuilds the form after each submit, so what the
@@ -39,7 +46,7 @@ export function ProductForm({
     <form
       key={state.attempt}
       action={formAction}
-      className="flex max-w-xl flex-col gap-4"
+      className="flex w-full max-w-xl flex-col gap-4"
       noValidate
     >
       {productId && <input type="hidden" name="id" value={productId} />}
@@ -114,12 +121,18 @@ export function ProductForm({
         <Button type="submit" size="lg" disabled={pending}>
           {pending ? "Saving…" : mode === "add" ? "Add product" : "Save changes"}
         </Button>
-        <Link
-          href="/products"
-          className={buttonVariants({ variant: "outline", size: "lg" })}
-        >
-          Cancel
-        </Link>
+        {onCancel ? (
+          <Button type="button" variant="outline" size="lg" onClick={onCancel}>
+            Cancel
+          </Button>
+        ) : (
+          <Link
+            href="/products"
+            className={buttonVariants({ variant: "outline", size: "lg" })}
+          >
+            Cancel
+          </Link>
+        )}
       </div>
     </form>
   );

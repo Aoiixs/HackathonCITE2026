@@ -1,3 +1,4 @@
+import { AddProductButton } from "./add-product-button";
 import Link from "next/link";
 import { requireManager } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
@@ -95,9 +96,7 @@ export default async function ProductsPage({
             Add, edit and switch off the products you sell.
           </p>
         </div>
-        <Link href="/products/new" className={buttonVariants({ size: "lg" })}>
-          Add product
-        </Link>
+        <AddProductButton categories={categories} />
       </header>
 
       {/* A plain form that reloads the page with ?q=&category=&status= in

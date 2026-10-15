@@ -16,6 +16,7 @@ export type ProductFormState = {
   errors: Partial<Record<Field, string>>;
   formError: string | null;
   values: Record<string, string>;
+  done?: boolean; // set when a save worked and the modal can close
   attempt: number; // counts submissions, so the form can reset to the values we send back
 };
 
@@ -93,7 +94,8 @@ export async function createProduct(
     return fail(previous, values, e, formError);
   }
 
-  redirect("/products?saved=added");
+  revalidatePath("/products");
+  return { errors: {}, formError: null, values: {}, attempt: previous.attempt + 1, done: true };
 }
 
 export async function updateProduct(
