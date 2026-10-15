@@ -1,6 +1,6 @@
 # PHINMA AI Builder — team template
 
-**Your live URL:** _paste it here as soon as you have one (Ticket 01)_
+**Your live URL:** https://hackathon-cite-2026.vercel.app
 
 This is your team's starting point. It is already a working Next.js app
 that deploys to Vercel. You will delete the starter page and build your
@@ -69,6 +69,14 @@ with it. You will be asked.
 4. Add the **same two variables** in Vercel: **Settings → Environment
    Variables**, then redeploy. Forgetting this step is the single most
    common reason the local app works and the live one does not.
+   The app needs exactly these two variables, in `.env.local` and in Vercel:
+
+   | Name                             | Value                                  |
+   |----------------------------------|----------------------------------------|
+   | `NEXT_PUBLIC_SUPABASE_URL`       | Project URL from **Connect**           |
+   | `NEXT_PUBLIC_SUPABASE_ANON_KEY`  | Publishable key (`sb_publishable_...`) |
+
+   Never add the `service_role` key or any `sb_secret_` key.
 5. Read `supabase/sql/001-example.sql`. It explains Row Level Security,
    which is what stops strangers reading your data.
 
