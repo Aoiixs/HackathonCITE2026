@@ -4,12 +4,12 @@
 
 **Blocked by:** 01
 
-**Status:** todo
+**Status:** done
 
-- [ ] The two Supabase environment variables are set locally and in Vercel, and the live site was redeployed after adding them
-- [ ] The `profiles` table exists as in the spec, created from a numbered file in `supabase/sql/`
-- [ ] Row Level Security is on for `profiles`, with a policy that lets a signed-in user read only their own profile
-- [ ] Sign-ups are switched off in Supabase
-- [ ] No `service_role` or `sb_secret_` key appears anywhere in the project, and `.env.local` is not committed
-- [ ] The page shows "Connected", and shows that a signed-out visitor sees no profile rows
-- [ ] Works on the live URL
+- [x] The two Supabase environment variables are set locally and in Vercel, and the live site was redeployed after adding them
+- [x] The `profiles` table exists as in the spec, created from a numbered file in `supabase/sql/`
+- [x] Row Level Security is on for `profiles`, with a policy that lets a signed-in user read only their own profile
+- [x] Sign-ups are switched off in Supabase
+- [x] No `service_role` or `sb_secret_` key appears anywhere in the project, and `.env.local` is not committed
+- [x] The page shows "Connected", and shows that a signed-out visitor sees no profile rows
+- [x] Works on the live URL
