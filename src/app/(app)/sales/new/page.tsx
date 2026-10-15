@@ -35,7 +35,7 @@ export default async function NewSalePage() {
           >
             ← Back to dashboard
           </Link>
-          <h1 className="text-3xl font-semibold tracking-tight">Menu</h1>
+          <h1 className="text-3xl font-semibold tracking-tight">New sale</h1>
         </div>
         <LowStockBadge />
       </header>

@@ -116,9 +116,9 @@ Managers are sent back to the Dashboard.
   alert.
 - "Adjust stock": enter the counted stock and a required note; saves
   through `adjust_stock`.
-- "Deactivate" opens a confirmation dialog and sets is_active = false.
-  Inactive products disappear from New sale but stay in past sales and
-  history.
+- "Deactivate" opens a confirmation dialog, sets is_active = false, and
+  resolves its open or flagged low-stock alert. Inactive products
+  disappear from New sale but stay in past sales and history.
 - Success toast after save.
 
 ### 5. Record stock-in, manager only (on Manage Stocks)

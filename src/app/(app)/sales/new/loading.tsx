@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { HeadingSkeleton, LoadingFrame, Skeleton } from "@/components/skeletons";
 
-// The Menu screen has two columns: product tiles and the order.
+// The New sale screen has two columns: product tiles and the order.
 export default function Loading() {
   return (
     <LoadingFrame>

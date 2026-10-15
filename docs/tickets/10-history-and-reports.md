@@ -15,8 +15,8 @@
 - [x] If the totals cannot be loaded, the screen says so instead of showing zeros
 - [x] Voided sales are left out of the totals
 - [x] A clearly labelled demo-data script (and a script that removes it) can fill the last 15 days (ending today) with sample sales, stock movements and low-stock products for a rehearsal
-- [x] Stock movement history: filters for From date, To date, product (including deactivated products) and type chips (All, Sale, Stock-in, Stock-out)
-- [x] The table, newest first, shows date and time, product, a coloured type pill (Sale, Stock-in, "Stock-out · reason"), quantity as +n or −n, remaining stock, and employee
+- [x] Stock movement history: filters for From date, To date, product (including deactivated products) and type chips (All, Sale, Stock-in, Stock-out, Adjustment, Initial)
+- [x] The table, newest first, shows date and time, product, a coloured type pill (Sale, Stock-in, "Stock-out · reason"), quantity as +n or −n, remaining stock, employee, and note
 - [x] More than one page of movements loads with a "Load more" button; no matches shows "No movements for these filters"
 - [x] Deactivated products still appear in the history
 - [x] A sales list shows receipt number, date and time, cashier, total, payment method and status, each with a link that reopens the receipt; an employee cannot open another employee's receipt

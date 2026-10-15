@@ -1,6 +1,7 @@
 -- NOTE: this is a repair script that repeats sections 1 to 4 of
 -- 005-create-sales.sql (tables and security only). It never contained
--- complete_sale(); the current version is in 006-create-low-stock-alerts.sql.
+-- complete_sale(); the live version is in
+-- 015-complete-sale-employees-only.sql.
 
 -- 005b — repair: create the sales tables if they are missing.
 --

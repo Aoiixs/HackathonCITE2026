@@ -21,19 +21,22 @@ running out too late. Then orders get declined, about twenty-five pesos
 lost each time. Jeremiah says it happens many times.
 
 ### 3. Our fix
-We built StockWise. In one sentence: staff tap the products in a
-customer's order, record the payment, and give a receipt, and the stock
+We built StockWise. In one sentence: the employee taps the products in a
+customer's order, records the payment, and gives a receipt, and the stock
 drops by itself. When a product falls below its minimum, it shows up on a
-running low list, so the manager can restock before it runs out.
+running low list. The manager sees every sale from every employee, and can
+restock before anything runs out.
 
 We asked Jeremiah about a Google Sheet with formulas. He said it is too
 complicated to set up and keep working. So we built something simple, for
 one branch.
 
 ### 4. The demo moment
-Now we show it live. We sign in. We add a product. We take an order and
-show the receipt. We watch the stock number drop. Then we see the product
-appear on the running low list.
+Now we show it live, on two screens. As the manager, we add a product. As
+the employee, we take an order and show the receipt. We watch the stock
+number drop, and the product appear on the running low list. Back on the
+manager's screen, the sale is there, and we flag the product for
+restocking.
 
 ### 5. How we will know
 Jeremiah will try it at the counter. We will time one order in the app
@@ -41,7 +44,7 @@ and compare it to today's two to five minutes. We will also check the
 screen's stock count against the shelf. If the order is faster and the
 count matches, it worked.
 
-*(About 280 words, roughly 2 minutes spoken. Under the 450-word limit.)*
+*(About 300 words, roughly 2 minutes spoken, which leaves room for the demo. Under the 450-word limit.)*
 
 ## The three hardest questions
 
@@ -75,3 +78,16 @@ Strengthen it before you present:
 - Ask Jeremiah how many orders he declines on a typical day.
 - Get one quote from Jeremiah in his own words about what annoys him most.
 - Confirm a time when he will try the live app.
+
+## Before you present
+- **Two screens, already signed in.** Switching accounts live eats your
+  three minutes. Use one normal browser window for the employee and one
+  private window for the manager, both on the live URL, not localhost.
+- **Demo data.** If you want a full History screen, run
+  `supabase/seed/demo-data.sql` on the day you present (it builds the 15
+  days ending today). To start clean instead, run `014` by hand. Never say
+  the demo sales are real. They are made-up sample data.
+- **Have one product already low on stock**, so the running low list is
+  not empty if the live order does not tip a product below its minimum.
+- **Rehearse out loud with a timer.** The script is about two minutes;
+  the demo should fit in the rest.

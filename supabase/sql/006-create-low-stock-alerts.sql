@@ -1,3 +1,8 @@
+-- NOTE: the complete_sale() in this file is SUPERSEDED by the version in
+-- 015-complete-sale-employees-only.sql (the only change is that sales are
+-- now limited to employees). The create_product() in this file is still the
+-- live one.
+
 -- 006 — low_stock_alerts, the "re-check" rule, and the functions that use it.
 --
 -- Run this in the Supabase dashboard: SQL Editor -> New query -> paste -> Run.
