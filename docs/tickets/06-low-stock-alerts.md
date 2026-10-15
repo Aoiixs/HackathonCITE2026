@@ -15,4 +15,5 @@
 - [ ] The manager can "Flag for restocking" and "Mark resolved"
 - [ ] A badge with the number of open and flagged alerts shows on the Dashboard and the New sale screen
 - [ ] The manager Dashboard shows active products, low-stock items, and sales today for all staff
+- [ ] Every policy on this table allows only staff whose profile has `is_active = true`; a deactivated user is refused even with a login that still works
 - [ ] Works on the live URL

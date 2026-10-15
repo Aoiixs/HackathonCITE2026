@@ -241,6 +241,10 @@ Table and column names are decisions; use them exactly.
 
 ## Row Level Security
 - Signed-out visitors: nothing.
+- **Deactivated staff** (`is_active = false`) are refused by every policy
+  and every database function on every table except reading their own
+  profile (the app needs that to sign them out). A password that still
+  works is not enough.
 - **Employee:** read all products (only active ones appear on New sale);
   call `complete_sale` (and, in Stage 2, `record_stock_in` and
   `record_stock_out`); read open and flagged alerts; read their own

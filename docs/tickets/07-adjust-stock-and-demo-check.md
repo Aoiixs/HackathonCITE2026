@@ -12,5 +12,6 @@
 - [ ] An adjustment writes an 'adjustment' movement with the difference and re-checks the product's alert
 - [ ] An employee cannot adjust stock
 - [ ] Every item in the "Done for the demo" checklist in `docs/SPEC.md` passes on the live URL, signed in as both roles
-- [ ] A signed-out visitor sees nothing, and an employee cannot reach Manage products
+- [ ] `adjust_stock` allows only an active manager
+- [ ] A signed-out visitor sees nothing, an employee cannot reach Manage products, and a deactivated staff member is refused everywhere
 - [ ] Works on the live URL

@@ -15,4 +15,5 @@
 - [ ] "Deactivate" asks for confirmation and hides the product from the active list; nothing is deleted
 - [ ] An employee cannot open Manage products or change products
 - [ ] Stock cannot be changed by a direct update from the app, and this is enforced in the database
+- [ ] Every policy on these tables allows only staff whose profile has `is_active = true`; a deactivated user is refused even with a login that still works
 - [ ] Works on the live URL

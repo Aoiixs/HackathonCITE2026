@@ -16,4 +16,5 @@
 - [ ] The employee Dashboard shows the product list with stock, their own sales today (total and count), and their five most recent sales
 - [ ] An employee sees only their own sales; a manager sees everyone's
 - [ ] Sales cannot be edited or deleted
+- [ ] Every policy on these tables, and `complete_sale` itself, allows only staff whose profile has `is_active = true`; a deactivated user is refused even with a login that still works
 - [ ] Works on the live URL
