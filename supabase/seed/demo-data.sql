@@ -1,23 +1,28 @@
--- DEMO DATA — a believable Oct 1 to Oct 15, 2026 for History & reports.
+-- DEMO DATA — a believable 15 days of history, ending today, for History & reports.
 --
 -- Run this in the Supabase dashboard: SQL Editor -> New query -> paste -> Run.
 -- It needs 002 to 010 to have been run first, and at least one active
--- manager profile (and ideally an employee).
+-- manager profile and one active employee profile.
+--
+-- THE DATES ARE RELATIVE TO THE DAY YOU RUN IT (Manila time): the history
+-- starts 14 days ago and ends today, so run it on the day you demo. Today's
+-- sales stop 5 minutes before the moment you run it, so nothing is dated in
+-- the future. (If you run it before 8:05am, today has no sales yet.)
 --
 -- THIS IS MADE-UP SAMPLE DATA for a demo, not real sales. Never present it
 -- as real. To remove all of it again, run remove-demo-data.sql.
 --
 -- What it creates:
---   * 11 products (Meals, Snacks, Drinks, Cakes) with starting stock on Oct 1
---   * about 200 cash sales from Oct 1 to today, 8am to 8pm Manila time,
---     busier on weekends, mostly by the employee and some by the manager
+--   * 11 products (Meals, Snacks, Drinks, Cakes) with starting stock on day 1
+--   * about 200 cash sales over 15 days, 8am to 8pm Manila time, busier on
+--     weekends. Every sale belongs to the employee: managers do not sell.
 --   * three deliveries (stock in), a few spoiled/damaged items (stock out),
 --     and a shelf recount on the last day that leaves four products low
 --   * the matching stock movements and low-stock alerts, so every screen
 --     agrees with every other screen
 --
--- It is "seeded" (it always produces the same data) so you can rehearse a
--- demo with numbers that do not change. It refuses to run twice.
+-- It is "seeded" (the same "random" numbers every time), though the days
+-- shift with the date you run it. It refuses to run twice.
 
 do $$
 declare
@@ -33,13 +38,13 @@ declare
   v_adj_names text[]   := array['Iced Coffee', 'Chocolate Cake Slice', 'Bottled Water', 'Beef Tapa Meal'];
   v_adj_to    int[]    := array[9, 4, 14, 11];                        -- the shelf recount on the last day
   v_reasons  text[]    := array['spoiled', 'damaged', 'used'];
-  v_t0       timestamptz := '2026-10-01 07:00:00+08';
+  v_start    date        := (now() at time zone 'Asia/Manila')::date - 14; -- 15 days, today included
+  v_t0       timestamptz := ((v_start)::timestamp + interval '7 hours') at time zone 'Asia/Manila';
 
   n          int;
   v_wsum     numeric;
   v_mgr      uuid;
   v_emp      uuid;
-  v_actor    uuid;
   v_ids      uuid[]    := '{}';
   v_stock    int[]     := '{}';
   v_pid      uuid;
@@ -80,13 +85,15 @@ begin
   if v_mgr is null then
     raise exception 'No active manager profile found. Run 003 first.';
   end if;
-  v_emp := coalesce(v_emp, v_mgr);
+  if v_emp is null then
+    raise exception 'No active employee profile found. Every demo sale belongs to the employee (managers do not sell).';
+  end if;
 
   perform setseed(0.2026);   -- the same "random" numbers every time
   n := array_length(v_names, 1);
   select sum(w) into v_wsum from unnest(v_weights) w;
 
-  -- 1. The products, with their starting stock on Oct 1.
+  -- 1. The products, with their starting stock on the first day.
   for i in 1..n loop
     insert into public.products (name, category, price, current_stock, minimum_stock, created_at, updated_at)
     values (v_names[i], v_cats[i], v_prices[i], v_init[i], v_mins[i], v_t0, v_t0)
@@ -97,14 +104,14 @@ begin
     insert into public.inventory_movements
       (product_id, employee_id, movement_type, quantity_change, remaining_stock, note, movement_date, created_at)
     values
-      (v_pid, v_mgr, 'initial', v_init[i], v_init[i], 'DEMO DATA', date '2026-10-01', v_t0);
+      (v_pid, v_mgr, 'initial', v_init[i], v_init[i], 'DEMO DATA', v_start, v_t0);
   end loop;
 
   -- 2. Day by day: deliveries, a recount, sales, then spoilage.
   for d in 0..14 loop
-    v_day := date '2026-10-01' + d;
+    v_day := v_start + d;
 
-    -- Deliveries on Oct 4, 8 and 12 for anything running thin.
+    -- Deliveries on days 4, 8 and 12 for anything running thin.
     if d in (3, 7, 11) then
       for i in 1..n loop
         if v_stock[i] < 3 * v_mins[i] then
@@ -119,8 +126,25 @@ begin
       end loop;
     end if;
 
-    -- The morning of the last day: the manager recounts four shelves.
+    -- The morning of the last day (today): a delivery tops up any product
+    -- that is thin and is not one of the four to be left low, then the
+    -- manager recounts four shelves. This keeps exactly four products low
+    -- at the end, whatever day the script is run. Both are dated 5 minutes
+    -- before now at the latest, so they are never in the future.
     if d = 14 then
+      for i in 1..n loop
+        if not (v_names[i] = any (v_adj_names)) and v_stock[i] < 2 * v_mins[i] then
+          v_qty := v_mins[i] * 4 + floor(random() * 10)::int;
+          v_stock[i] := v_stock[i] + v_qty;
+          insert into public.inventory_movements
+            (product_id, employee_id, movement_type, quantity_change, remaining_stock, note, movement_date, created_at)
+          values
+            (v_ids[i], v_mgr, 'stock_in', v_qty, v_stock[i], 'DEMO DATA: delivery', v_day,
+             least((v_day::timestamp + interval '7 hours 30 minutes') at time zone 'Asia/Manila',
+                   now() - interval '5 minutes'));
+        end if;
+      end loop;
+
       for j in 1..array_length(v_adj_names, 1) loop
         i := array_position(v_names, v_adj_names[j]);
         if v_stock[i] <> v_adj_to[j] then
@@ -130,7 +154,8 @@ begin
             (product_id, employee_id, movement_type, quantity_change, remaining_stock, note, movement_date, created_at)
           values
             (v_ids[i], v_mgr, 'adjustment', v_qty, v_stock[i], 'DEMO DATA: shelf recount', v_day,
-             (v_day::timestamp + interval '7 hours 45 minutes') at time zone 'Asia/Manila');
+             least((v_day::timestamp + interval '7 hours 45 minutes') at time zone 'Asia/Manila',
+                   now() - interval '5 minutes'));
         end if;
       end loop;
     end if;
@@ -141,12 +166,15 @@ begin
       else 10 + floor(random() * 7)::int
     end;
     v_end_min := 1200;   -- 8pm
-    if d = 14 then       -- today: stop a few minutes before right now
-      v_end_min := least(1200, greatest(540,
+    if d = 14 then       -- today: stop 5 minutes before right now
+      v_end_min := least(1200,
         (extract(hour from (now() at time zone 'Asia/Manila')) * 60
-         + extract(minute from (now() at time zone 'Asia/Manila')))::int - 5));
+         + extract(minute from (now() at time zone 'Asia/Manila')))::int - 5);
+      if v_end_min <= 480 then
+        v_n_sales := 0;  -- the shop has not opened yet, so no sales today
+      end if;
     end if;
-    v_slot := (v_end_min - 480)::numeric / v_n_sales;
+    v_slot := (v_end_min - 480)::numeric / greatest(v_n_sales, 1);
 
     for k in 1..v_n_sales loop
       v_lines_idx := '{}';
@@ -172,6 +200,11 @@ begin
         if v_qty > v_stock[v_pick] then
           v_qty := v_stock[v_pick];   -- never sell more than is on the shelf
         end if;
+        -- Today, the products that are not meant to end low stay at or above
+        -- their minimum.
+        if d = 14 and not (v_names[v_pick] = any (v_adj_names)) then
+          v_qty := least(v_qty, v_stock[v_pick] - v_mins[v_pick]);
+        end if;
         if v_qty <= 0 then
           continue;
         end if;
@@ -195,13 +228,12 @@ begin
 
       v_minute := 480 + floor((k - 1) * v_slot + random() * v_slot)::int;
       v_ts := (v_day::timestamp + make_interval(mins => v_minute)) at time zone 'Asia/Manila';
-      v_actor := case when random() < 0.8 then v_emp else v_mgr end;
       v_count := v_count + 1;
 
       insert into public.sales
         (receipt_number, employee_id, total_amount, amount_received, change_amount, payment_method, status, created_at)
       values
-        ('DEMO-' || lpad(v_count::text, 4, '0'), v_actor, v_total, v_received,
+        ('DEMO-' || lpad(v_count::text, 4, '0'), v_emp, v_total, v_received,
          v_received - v_total, 'cash', 'completed', v_ts)
       returning id into v_sale_id;
 
@@ -217,11 +249,11 @@ begin
         insert into public.inventory_movements
           (product_id, sale_id, employee_id, movement_type, quantity_change, remaining_stock, movement_date, created_at)
         values
-          (v_ids[i], v_sale_id, v_actor, 'sale', -v_lines_qty[j], v_stock[i], v_day, v_ts);
+          (v_ids[i], v_sale_id, v_emp, 'sale', -v_lines_qty[j], v_stock[i], v_day, v_ts);
       end loop;
     end loop;
 
-    -- Evening spoilage on Oct 5, 9 and 14 (not today).
+    -- Evening spoilage on days 5, 9 and 14 (never today).
     if d in (4, 8, 13) then
       for j in 1..2 loop
         i := 1 + ((d * 3 + j * 5) % n);

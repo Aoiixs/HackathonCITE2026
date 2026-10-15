@@ -1,4 +1,4 @@
--- Removes everything demo-data-oct-2026.sql created, and nothing else.
+-- Removes everything demo-data.sql created, and nothing else.
 --
 -- Run this in the Supabase dashboard: SQL Editor -> New query -> paste -> Run.
 --
