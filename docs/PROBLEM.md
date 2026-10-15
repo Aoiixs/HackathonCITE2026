@@ -18,10 +18,14 @@ connected, so we have seen:
 
 This happens daily, with every customer order.
 
-**Still to confirm with Jeremiah (not yet measured):**
-- Orders per day: ___
-- Minutes per day spent updating Excel: ___
-- Times a product ran out without being noticed, and what happened: ___
+**What the team has measured (reported by Jeremiah and the manager):**
+- Orders per day: 50 to 70 on a normal day, 100 to 120 on a busy day.
+- Time lost: 2 to 5 minutes on every order. At 50 to 70 orders that is
+  roughly 100 to 350 minutes of handling a day (our arithmetic from his
+  figures, not a separate measurement).
+- Products running out unnoticed: it happens many times. Orders get
+  declined and profit is lost. A peso amount for one real case is still
+  to be collected.
 
 ## Today's workaround
 A notebook for orders and an Excel spreadsheet for stock, kept in
@@ -47,8 +51,9 @@ Demo (three minutes): add a product, take an order, watch the stock
 drop, see the product appear as running low.
 Who will try it before Session 3: Jeremiah (to confirm).
 Why software and not a better spreadsheet: Excel cannot deduct stock
-while the order is being taken and cannot warn anyone (our reasoning;
-Jeremiah has not yet confirmed it).
+while the order is being taken and cannot warn anyone. Jeremiah's own
+view: a Google Sheet with formulas is too complicated to set up and
+maintain.
 
 ## Out of scope
 - Stage 2 items from `docs/SPEC.md` (stock-in/out forms, history and
@@ -62,3 +67,9 @@ Jeremiah has not yet confirmed it).
 - **Stock**: how many units of a product are left.
 - **Minimum level**: the stock number below which a product counts as "running low".
 - **Running low**: a product whose stock is below its minimum level.
+- **Sale**: the saved record of an order once it is paid, with the payment method and a receipt number. (Team to confirm that Jeremiah uses "order" and "sale" for the same thing.)
+- **Void**: cancelling a wrong sale so it no longer counts. Stage 2.
+- **Stock-in**: stock added, for example a delivery arrives.
+- **Stock-out**: stock removed without a sale, for example spoiled or damaged.
+- **Employee**: the person at the counter who takes orders (Jeremiah).
+- **Manager**: the person who manages products and decides restocking.
