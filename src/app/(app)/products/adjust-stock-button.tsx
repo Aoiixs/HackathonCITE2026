@@ -48,13 +48,13 @@ export function AdjustStockButton({
       </Button>
       <dialog
         ref={dialogRef}
-        className="m-auto w-full max-w-md rounded-[var(--radius)] border border-border bg-card p-6 text-card-foreground backdrop:bg-black/40"
+        className="m-auto w-full max-w-xl rounded-[var(--radius)] border border-border bg-card p-8 text-card-foreground backdrop:bg-black/40"
       >
-        <form action={formAction} className="flex flex-col gap-4">
+        <form action={formAction} className="flex flex-col gap-6">
           <input type="hidden" name="id" value={productId} />
           <div className="flex flex-col gap-1">
-            <h2 className="text-lg font-semibold">Adjust stock: {productName}</h2>
-            <p className="text-sm text-muted-foreground">
+            <h2 className="text-2xl font-semibold">Adjust stock: {productName}</h2>
+            <p className="text-base text-muted-foreground">
               The system says {currentStock}. Count the shelf and enter what is
               really there. The change is saved in the history with your note.
             </p>
@@ -66,6 +66,7 @@ export function AdjustStockButton({
               id={`counted-${productId}`}
               name="counted"
               inputMode="numeric"
+              className="h-12 text-base"
               value={counted}
               onChange={(e) => setCounted(e.target.value)}
               required
@@ -80,6 +81,7 @@ export function AdjustStockButton({
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="e.g. Shelf count after closing"
+              className="min-h-[140px] text-base"
               required
             />
           </div>
@@ -90,15 +92,16 @@ export function AdjustStockButton({
             </p>
           )}
 
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-end gap-3 pt-2">
             <Button
               type="button"
               variant="ghost"
+              size="lg"
               onClick={() => dialogRef.current?.close()}
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={pending}>
+            <Button type="submit" size="lg" disabled={pending}>
               {pending ? "Saving…" : "Save adjustment"}
             </Button>
           </div>
