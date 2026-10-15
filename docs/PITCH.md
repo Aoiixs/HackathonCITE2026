@@ -41,7 +41,7 @@ and compare it to today's two to five minutes. We will also check the
 screen's stock count against the shelf. If the order is faster and the
 count matches, it worked.
 
-*(About 330 words.)*
+*(About 280 words, roughly 2 minutes spoken. Under the 450-word limit.)*
 
 ## The three hardest questions
 
