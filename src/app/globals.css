@@ -72,3 +72,25 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
 }
+
+/* A short fade when a table moves to another page, so the change feels
+   smooth instead of jumping. Switched off for people who ask their device
+   for less motion. */
+@keyframes page-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.page-fade {
+  animation: page-fade 180ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-fade {
+    animation: none;
+  }
+}
