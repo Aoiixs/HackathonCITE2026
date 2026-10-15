@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getStaff } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import {
@@ -13,6 +14,7 @@ import { MovementHistory, type Movement } from "./movement-history";
 import { SalesList, type SaleRow } from "./sales-list";
 import { SummaryCards } from "./summary-cards";
 import { PageLabel } from "@/components/page-label";
+import { buttonVariants } from "@/components/ui/button";
 
 const PAGE_SIZE = 25;
 const SALES_SHOWN = 100;
@@ -184,13 +186,23 @@ export default async function HistoryPage({
 
   return (
     <div className="flex flex-col gap-6">
-      <header className="flex flex-col gap-1">
-        <PageLabel>History &amp; reports</PageLabel>
-        <h1 className="text-3xl font-semibold tracking-tight">History &amp; reports</h1>
-        <p className="text-muted-foreground">
-          {formatDateOnly(from)} to {formatDateOnly(to)}
-          {!isManager && " · only your own records"}
-        </p>
+      <header className="flex flex-wrap items-end justify-between gap-4">
+        <div className="flex flex-col gap-1">
+          <PageLabel>History &amp; reports</PageLabel>
+          <h1 className="text-3xl font-semibold tracking-tight">History &amp; reports</h1>
+          <p className="text-muted-foreground">
+            {formatDateOnly(from)} to {formatDateOnly(to)}
+            {!isManager && " · only your own records"}
+          </p>
+        </div>
+        {!isManager && (
+          <Link
+            href="/"
+            className={buttonVariants({ variant: "outline", size: "lg" })}
+          >
+            ← Back to dashboard
+          </Link>
+        )}
       </header>
 
       {report ? (
