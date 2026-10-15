@@ -131,7 +131,9 @@ export async function updateProduct(
     return fail(previous, values, {}, "Could not find that product.");
   }
 
-  redirect("/products?saved=updated");
+  revalidatePath("/products");
+  revalidatePath("/");
+  return { errors: {}, formError: null, values: {}, attempt: previous.attempt + 1, done: true };
 }
 
 export type AdjustStockState = { error: string | null; done: boolean };

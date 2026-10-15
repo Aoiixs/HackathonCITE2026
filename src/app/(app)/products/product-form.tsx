@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,9 +36,19 @@ export function ProductForm({
     values: initialValues,
     attempt: 0,
   });
+  // After a successful save: run onSaved (the modals close themselves), or,
+  // on a full page, go back to the products list. The ref keeps the latest
+  // onSaved without making this run again on every render.
+  const router = useRouter();
+  const savedRef = useRef(onSaved);
   useEffect(() => {
-    if (state.done) onSaved?.();
-  }, [state, onSaved]);
+    savedRef.current = onSaved;
+  });
+  useEffect(() => {
+    if (!state.done) return;
+    if (savedRef.current) savedRef.current();
+    else router.replace(`/products?saved=${mode === "add" ? "added" : "updated"}`);
+  }, [state, router, mode]);
   const value = (key: string) => state.values[key] ?? "";
 
   // key={state.attempt} rebuilds the form after each submit, so what the
