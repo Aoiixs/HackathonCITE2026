@@ -32,25 +32,43 @@ export default async function LoginPage({
   }
 
   return (
-    <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-6 px-4 py-12">
-      <div className="flex justify-center">
-        <Logo variant="light" height={48} />
-      </div>
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Sign in</CardTitle>
-          <CardDescription>Sign in with your staff account.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <LoginForm
-            notice={
-              reason === "inactive"
-                ? "This account can't sign in. Please ask the manager."
-                : undefined
-            }
-          />
-        </CardContent>
-      </Card>
-    </main>
+    <div className="flex min-h-screen flex-1 flex-col md:grid md:grid-cols-2">
+      {/* Left half: brand panel. Hidden below 768px. */}
+      <aside className="hidden flex-col justify-between bg-sidebar p-12 md:flex">
+        <Logo variant="dark" height={40} />
+        <div className="flex max-w-lg flex-col gap-4">
+          <h2 className="text-[40px] font-bold leading-tight tracking-tight text-white">
+            Sales and stock, connected.
+          </h2>
+          <p className="text-lg text-[#c9d8cf]">
+            Every sale at the counter updates the stock right away, and low
+            stock is flagged before it runs out.
+          </p>
+        </div>
+        <p className="text-sm text-sidebar-muted">Nexora · Ortiz Branch</p>
+      </aside>
+
+      {/* Right half: the Sign in card. */}
+      <main className="flex flex-1 flex-col items-center justify-center gap-6 px-4 py-12">
+        <div className="md:hidden">
+          <Logo variant="light" height={48} />
+        </div>
+        <Card className="w-full max-w-[420px]">
+          <CardHeader>
+            <CardTitle className="text-2xl">Sign in</CardTitle>
+            <CardDescription>Sign in with your staff account.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <LoginForm
+              notice={
+                reason === "inactive"
+                  ? "This account can't sign in. Please ask the manager."
+                  : undefined
+              }
+            />
+          </CardContent>
+        </Card>
+      </main>
+    </div>
   );
 }
