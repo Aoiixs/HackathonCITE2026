@@ -1,19 +1,22 @@
 # 10 — History and reports
 
-**What to build:** A History & reports screen where staff can look back: every stock movement (sales, stock in, stock out, adjustments, initial stock), a list of sales that opens each receipt again, and a summary for the chosen dates. The manager sees everyone's records; an employee sees only their own. This is Stage 2 work from `docs/SPEC.md`, pulled forward at the team's request. Voiding a sale is a separate item and is not part of this ticket.
+**What to build:** A History & reports screen where staff can look back: three summary cards for the chosen dates (total sales with a daily chart, most sold products, products running low), the stock movement history, and a list of sales that opens each receipt again. The manager sees everyone's records; an employee sees only their own. This is Stage 2 work from `docs/SPEC.md`, pulled forward at the team's request. Voiding a sale is a separate item and is not part of this ticket.
 
 **Blocked by:** 09
 
 **Status:** todo
 
 - [ ] A manager can read every staff member's name (a Row Level Security policy), so history can show who did what; an employee still reads only their own profile
-- [ ] The screen has a date range (defaults to the last 7 days, in Manila time), a product filter, and a movement-type filter, with Apply and Reset
-- [ ] Stock movement table: date, product, type (Sale, Stock in, Stock out, Adjustment, Initial), quantity change, remaining stock, employee, and reason or note; newest first
-- [ ] Sales list: receipt number, date and time, cashier, total, payment method and status, each with a link that opens the receipt
-- [ ] The receipt page shows the same receipt layout as after a sale, and an employee cannot open another employee's receipt
-- [ ] Summary for the chosen dates: total sales, number of sales, most sold products (top five by quantity) and the products running low now
+- [ ] The dates default to the 1st of this month through today, in Manila time, and the three cards follow them
+- [ ] "Total sales" card: the total in pesos, "{n} orders · average ₱{x} per order", and one bar per day with today's bar in a darker shade
+- [ ] "Most sold products" card: the top four by quantity sold, each with "{n} sold" and a bar scaled to the top item
+- [ ] "Low-stock items" card (amber border): every active product whose stock is below its minimum, shown as "{stock} of {min}", worked out live from current stock
 - [ ] Voided sales are left out of the totals
+- [ ] Stock movement history: filters for From date, To date, product (including deactivated products) and type chips (All, Sale, Stock-in, Stock-out)
+- [ ] The table, newest first, shows date and time, product, a coloured type pill (Sale, Stock-in, "Stock-out · reason"), quantity as +n or −n, remaining stock, and employee
+- [ ] More than one page of movements loads with a "Load more" button; no matches shows "No movements for these filters"
+- [ ] Deactivated products still appear in the history
+- [ ] A sales list shows receipt number, date and time, cashier, total, payment method and status, each with a link that reopens the receipt; an employee cannot open another employee's receipt
 - [ ] A manager sees all staff's records; an employee sees only their own, and their labels say "Your"
-- [ ] If there are more rows than are shown, the screen says so
 - [ ] "History & reports" is in the manager's menu and on the employee's Dashboard
 - [ ] Works on the live URL

@@ -54,6 +54,42 @@ export function formatDateOnly(date: string): string {
   }).format(new Date(`${date}T00:00:00+08:00`));
 }
 
+/** The first day of this month in Manila, as "2026-10-01". */
+export function firstOfMonthManila(): string {
+  return `${todayManila().slice(0, 8)}01`;
+}
+
+/** The Manila calendar date a moment fell on, as "2026-10-15". */
+export function manilaDateOf(iso: string): string {
+  return new Date(new Date(iso).getTime() + MANILA_OFFSET_MS)
+    .toISOString()
+    .slice(0, 10);
+}
+
+/** Every date from `from` to `to` inclusive, as "YYYY-MM-DD" strings. */
+export function eachDay(from: string, to: string): string[] {
+  const days: string[] = [];
+  const last = Date.parse(`${to}T00:00:00Z`);
+  for (let t = Date.parse(`${from}T00:00:00Z`); t <= last; t += DAY_MS) {
+    days.push(new Date(t).toISOString().slice(0, 10));
+  }
+  return days;
+}
+
+/** e.g. "Oct 15, 2:45 PM" in Manila time (the year is added for other years). */
+export function formatShortManila(iso: string): string {
+  const thisYear = todayManila().slice(0, 4);
+  const sameYear = manilaDateOf(iso).startsWith(thisYear);
+  return new Intl.DateTimeFormat("en-PH", {
+    timeZone: "Asia/Manila",
+    month: "short",
+    day: "numeric",
+    ...(sameYear ? {} : { year: "numeric" }),
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(new Date(iso));
+}
+
 /** e.g. "Oct 15, 2026, 1:45 PM" in Manila time. */
 export function formatManila(iso: string): string {
   return new Intl.DateTimeFormat("en-PH", {
