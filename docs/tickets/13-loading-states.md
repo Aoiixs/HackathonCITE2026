@@ -4,13 +4,13 @@
 
 **Blocked by:** 12
 
-**Status:** code done; live-URL check still to do
+**Status:** done
 
 - [x] Every page in the signed-in app has a loading placeholder shaped like the page: Dashboard, New sale, Manage products (list and edit; Add product is now a pop-up, so it needs none), Manage Stocks, Low stock, History & reports, and a reopened receipt
 - [x] The Sign in page has one too
-- [ ] Applying a filter, opening a link, and loading more rows each show the placeholder at once
+- [x] Applying a filter, opening a link, and loading more rows each show the placeholder at once
 - [x] The placeholders are announced to screen readers as "Loading…" and the grey blocks are hidden from them
 - [x] Log out, Deactivate, Flag for restocking and Mark resolved show a "working" label while they run and cannot be pressed a second time
 - [x] The buttons that already showed a working label (Sign in, Confirm order, Save, Adjust stock) are unchanged
-- [ ] Nothing jumps or breaks at phone width
-- [ ] Works on the live URL
+- [x] Nothing jumps or breaks at phone width
+- [x] Works on the live URL
