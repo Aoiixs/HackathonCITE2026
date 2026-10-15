@@ -1,8 +1,10 @@
+import Link from "next/link";
 import { getStaff } from "@/lib/auth";
 import { getLowStockAlerts } from "@/lib/low-stock";
 import { AlertStatusPill } from "@/components/status-pill";
 import { SubmitButton } from "@/components/submit-button";
 import { Toast } from "@/components/toast";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { flagAlert, resolveAlert } from "./actions";
 import { PageLabel } from "@/components/page-label";
@@ -25,13 +27,23 @@ export default async function LowStockPage({
           tone="error"
         />
       )}
-      <header className="flex flex-col gap-1">
-        <PageLabel>Low stock</PageLabel>
-        <h1 className="text-3xl font-semibold tracking-tight">Low stock</h1>
-        <p className="text-muted-foreground">
-          Products below their minimum level, furthest below first.
-          {!isManager && " The manager decides when to restock."}
-        </p>
+      <header className="flex flex-wrap items-end justify-between gap-4">
+        <div className="flex flex-col gap-1">
+          <PageLabel>Low stock</PageLabel>
+          <h1 className="text-3xl font-semibold tracking-tight">Low stock</h1>
+          <p className="text-muted-foreground">
+            Products below their minimum level, furthest below first.
+            {!isManager && " The manager decides when to restock."}
+          </p>
+        </div>
+        {!isManager && (
+          <Link
+            href="/"
+            className={buttonVariants({ variant: "outline", size: "lg" })}
+          >
+            ← Back to dashboard
+          </Link>
+        )}
       </header>
 
       <Card>
