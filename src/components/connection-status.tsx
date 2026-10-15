@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -5,6 +6,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 // rows a signed-out visitor can see. Row Level Security should make that 0,
 // and "Connected" proves the app reached Supabase. Ticket 03 replaces it.
 export async function ConnectionStatus() {
+  // Render on every visit, never frozen at build time. This must come before
+  // the try, or the catch below would swallow Next.js's own dynamic signal.
+  await connection();
+
   let count: number | null = null;
   let error: { message: string } | null = null;
 
