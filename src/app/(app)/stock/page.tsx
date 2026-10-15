@@ -6,6 +6,7 @@ import { todayManila } from "@/lib/time";
 import { cn } from "@/lib/utils";
 import { recordStockIn, recordStockOut } from "./actions";
 import { StockForm, type StockProduct } from "./stock-form";
+import { PageLabel } from "@/components/page-label";
 
 export default async function ManageStocksPage({
   searchParams,
@@ -34,6 +35,7 @@ export default async function ManageStocksPage({
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-col gap-1">
+        <PageLabel>Manage Stocks</PageLabel>
         <h1 className="text-3xl font-semibold tracking-tight">Manage Stocks</h1>
         <p className="text-muted-foreground">
           {mode === "in"

@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { AdjustStockButton } from "./adjust-stock-button";
 import { DeactivateButton } from "./deactivate-button";
 import { Toast } from "@/components/toast";
+import { PageLabel } from "@/components/page-label";
 
 type Product = {
   id: string;
@@ -32,7 +33,7 @@ const FAILED_MESSAGES: Record<string, string> = {
 };
 
 const selectClass =
-  "flex h-10 w-full rounded-[var(--radius)] border border-input bg-background px-3 py-2 text-base md:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+  "flex h-10 w-full rounded-[var(--radius)] border border-input bg-card px-3 py-2 text-base md:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
 const peso = new Intl.NumberFormat("en-PH", {
   style: "currency",
@@ -85,8 +86,14 @@ export default async function ProductsPage({
         <Toast message={FAILED_MESSAGES[failed]} tone="error" />
       )}
 
-      <header className="flex items-center justify-between gap-4">
-        <h1 className="text-3xl font-semibold tracking-tight">Manage products</h1>
+      <header className="flex flex-wrap items-end justify-between gap-4">
+        <div className="flex flex-col gap-1">
+          <PageLabel>Manage products</PageLabel>
+          <h1 className="text-3xl font-semibold tracking-tight">Manage products</h1>
+          <p className="text-muted-foreground">
+            Add, edit and switch off the products you sell.
+          </p>
+        </div>
         <Link href="/products/new" className={buttonVariants({ size: "lg" })}>
           Add product
         </Link>

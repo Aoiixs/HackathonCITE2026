@@ -3,6 +3,7 @@ import { requireManager } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { updateProduct } from "../../actions";
 import { ProductForm } from "../../product-form";
+import { PageLabel } from "@/components/page-label";
 
 export default async function EditProductPage({
   params,
@@ -28,6 +29,7 @@ export default async function EditProductPage({
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-col gap-1">
+        <PageLabel>Manage products</PageLabel>
         <h1 className="text-3xl font-semibold tracking-tight">Edit product</h1>
         <p className="text-sm text-muted-foreground">
           Current stock: {product.current_stock}. Stock can&apos;t be changed

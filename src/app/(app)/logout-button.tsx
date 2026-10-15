@@ -3,11 +3,13 @@
 import { useRef } from "react";
 import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { SubmitButton } from "@/components/submit-button";
 import { signOut } from "@/app/login/actions";
 
 // Asks "Log out?" in a dialog first, so a stray tap can't end a busy shift.
-export function LogoutButton() {
+// onGreen: styled for the green sidebar / top bar.
+export function LogoutButton({ onGreen = false }: { onGreen?: boolean }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   return (
@@ -15,6 +17,10 @@ export function LogoutButton() {
       <Button
         variant="outline"
         size="sm"
+        className={cn(
+          onGreen &&
+            "border-[#4a6658] bg-transparent text-[#e8efea] hover:bg-sidebar-active",
+        )}
         onClick={() => dialogRef.current?.showModal()}
       >
         <LogOut className="size-4" aria-hidden="true" />

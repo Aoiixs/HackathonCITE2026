@@ -19,6 +19,7 @@ import {
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PageLabel } from "@/components/page-label";
 
 // A card title with a small icon in front. The icon is decoration only
 // (aria-hidden), so screen readers still hear just the words.
@@ -97,6 +98,7 @@ export default async function DashboardPage() {
     <div className="flex flex-col gap-6">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="flex flex-col gap-1">
+          <PageLabel>Dashboard</PageLabel>
           <h1 className="text-3xl font-semibold tracking-tight">Dashboard</h1>
           <p className="text-muted-foreground">
             Welcome, {staff.fullName}. You are signed in as{" "}

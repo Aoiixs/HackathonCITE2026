@@ -4,6 +4,7 @@ import { getStaff } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PageLabel } from "@/components/page-label";
 
 // A MOCK-UP profile. The name, role and email are real (from the signed-in
 // account). Everything under "Sample details" is placeholder text: nothing
@@ -41,7 +42,10 @@ export default async function ProfilePage() {
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-3xl font-semibold tracking-tight">My profile</h1>
+        <div className="flex flex-col gap-1">
+          <PageLabel>My profile</PageLabel>
+          <h1 className="text-3xl font-semibold tracking-tight">My profile</h1>
+        </div>
         <Link
           href="/"
           className={buttonVariants({ variant: "outline", size: "lg" })}

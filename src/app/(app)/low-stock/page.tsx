@@ -4,6 +4,7 @@ import { SubmitButton } from "@/components/submit-button";
 import { Toast } from "@/components/toast";
 import { Card, CardContent } from "@/components/ui/card";
 import { flagAlert, resolveAlert } from "./actions";
+import { PageLabel } from "@/components/page-label";
 
 export default async function LowStockPage({
   searchParams,
@@ -24,6 +25,7 @@ export default async function LowStockPage({
         />
       )}
       <header className="flex flex-col gap-1">
+        <PageLabel>Low stock</PageLabel>
         <h1 className="text-3xl font-semibold tracking-tight">Low stock</h1>
         <p className="text-muted-foreground">
           Products below their minimum level, furthest below first.

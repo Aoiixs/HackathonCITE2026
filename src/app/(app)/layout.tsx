@@ -10,36 +10,63 @@ export default async function AppLayout({
 }) {
   const staff = await getStaff();
 
+  // Managers get a full-height green sidebar (name, role and Log out at the
+  // bottom). Employees have no sidebar, so they get a green top bar instead.
+  if (staff.role === "manager") {
+    return (
+      <div className="flex min-h-screen flex-1 flex-col md:flex-row">
+        <aside className="flex flex-col justify-between gap-6 bg-sidebar p-4 md:sticky md:top-0 md:h-screen md:w-60 md:shrink-0 md:overflow-y-auto">
+          <div className="flex flex-col gap-6">
+            <div>
+              <p className="text-lg font-bold tracking-tight text-white">
+                StockWise
+              </p>
+              <p className="text-xs text-sidebar-muted">Nexora · Ortiz Branch</p>
+            </div>
+            <SidebarNav />
+          </div>
+          <div className="flex flex-col gap-3">
+            <Link
+              href="/profile"
+              title="My profile"
+              className="flex flex-col rounded-lg hover:opacity-80"
+            >
+              <span className="text-sm font-medium text-white">
+                {staff.fullName}
+              </span>
+              <span className="text-xs capitalize text-sidebar-muted">
+                {staff.role}
+              </span>
+            </Link>
+            <LogoutButton onGreen />
+          </div>
+        </aside>
+        <main className="min-w-0 flex-1 p-4 md:p-8">{children}</main>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen flex-1 flex-col">
-      <header className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-border bg-card px-4 py-3 md:px-6">
-        <span className="text-lg font-semibold tracking-tight text-sidebar">
+      <header className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 bg-sidebar px-4 py-3 md:px-6">
+        <span className="text-lg font-bold tracking-tight text-white">
           StockWise
         </span>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <Link
             href="/profile"
-            className="text-sm hover:underline"
             title="My profile"
+            className="text-sm hover:underline"
           >
-            <span className="text-muted-foreground">
-              <span className="font-medium">{staff.fullName}</span> · {staff.role}
+            <span className="font-medium text-sidebar-foreground">
+              {staff.fullName}
             </span>
+            <span className="text-sidebar-muted"> · {staff.role}</span>
           </Link>
-          <LogoutButton />
+          <LogoutButton onGreen />
         </div>
       </header>
-
-      {/* On a phone the menu sits above the page; from tablet width up it
-          becomes a sidebar. */}
-      <div className="flex flex-1 flex-col md:flex-row">
-        {staff.role === "manager" && (
-          <aside className="bg-sidebar p-2 md:w-56 md:p-4">
-            <SidebarNav />
-          </aside>
-        )}
-        <main className="min-w-0 flex-1 p-4 md:p-6">{children}</main>
-      </div>
+      <main className="min-w-0 flex-1 p-4 md:p-6">{children}</main>
     </div>
   );
 }
